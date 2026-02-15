@@ -160,20 +160,28 @@ public class Battleship {
     }
 
     // ====== TABLEROS ======
-    public void inicializarTableros() {
-        tableroP1 = new String[8][8];
-        tableroP2 = new String[8][8];
-        limpiarTableroRec(0, 0, tableroP1);
-        limpiarTableroRec(0, 0, tableroP2);
+ // Añade este Getter para saber la dificultad actual
+public boolean isModoTutorial() {
+    return this.modoTutorial;
+}
 
-        vidasP1 = new int[]{5, 4, 3, 2};
-        vidasP2 = new int[]{5, 4, 3, 2};
+// Modifica inicializarTableros para que las vidas coincidan con el tamaño de los barcos elegidos
+public void inicializarTableros() {
+    tableroP1 = new String[8][8];
+    tableroP2 = new String[8][8];
+    limpiarTableroRec(0, 0, tableroP1);
+    limpiarTableroRec(0, 0, tableroP2);
 
-        colocadosP1 = new boolean[4];
-        colocadosP2 = new boolean[4];
-
-        turno = 1;
+    // Las vidas deben ser el tamaño de los barcos en el lineup
+    vidasP1 = new int[dificultad];
+    vidasP2 = new int[dificultad];
+    
+    for(int i = 0; i < dificultad; i++) {
+        if(lineupP1[i] != null) vidasP1[i] = lineupP1[i].getSize();
+        if(lineupP2[i] != null) vidasP2[i] = lineupP2[i].getSize();
     }
+    turno = 1;
+}
 
     private void limpiarTableroRec(int f, int c, String[][] tablero) {
         if (f == 8) {

@@ -23,8 +23,8 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  *
  * @author nasry
  */
-public class MenuPrincipal extends JFrame{
-    
+public class MenuPrincipal extends JFrame {
+
     // Ahora usamos el objeto game como motor principal
     private battleshipgame.Battleship game;
 
@@ -68,7 +68,9 @@ public class MenuPrincipal extends JFrame{
             dialog.setVisible(true);
 
             String usernameRival = dialog.getUsernameIngresado();
-            if (usernameRival == null || usernameRival.trim().isEmpty()) return;
+            if (usernameRival == null || usernameRival.trim().isEmpty()) {
+                return;
+            }
 
             Player rival = Player.getPlayerByUsername(usernameRival.trim());
 
@@ -85,8 +87,7 @@ public class MenuPrincipal extends JFrame{
 
             // Iniciamos partida usando el objeto game que ya tenemos
             game.iniciarPartida(game.getCurrentUser(), rival);
-
-          //  new PickerNave(game, game.getPlayer1()); 
+            new PickerNave(this.game, this.game.getPlayer1());
             this.dispose();
         });
 
@@ -106,13 +107,13 @@ public class MenuPrincipal extends JFrame{
         });
 
         // 4. Botón MI PERFIL (¡AQUÍ ESTÁ EL CAMBIO!)
-      // Dentro de MenuPrincipal.java
-btnPerfil = crearBoton("MI PERFIL", fontBotones, fondoBtn, textoBtn, 450, 520, 410, 60);
-btnPerfil.addActionListener(e -> {
-    // CAMBIO: Ahora llama a MiPerfil, no a VerMisDatos directamente
-    new MiPerfil(this.game); 
-    this.dispose(); 
-});
+        // Dentro de MenuPrincipal.java
+        btnPerfil = crearBoton("MI PERFIL", fontBotones, fondoBtn, textoBtn, 450, 520, 410, 60);
+        btnPerfil.addActionListener(e -> {
+            // CAMBIO: Ahora llama a MiPerfil, no a VerMisDatos directamente
+            new MiPerfil(this.game);
+            this.dispose();
+        });
 
         // 5. Botón CERRAR SESIÓN
         btnCerrarSesion = crearBoton("CERRAR SESIÓN", fontBotones, fondoBtn, textoBtn, 450, 600, 410, 60);
@@ -140,5 +141,5 @@ btnPerfil.addActionListener(e -> {
         btn.setBounds(x, y, w, h);
         add(btn);
         return btn;
-}
+    }
 }
