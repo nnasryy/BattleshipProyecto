@@ -6,6 +6,7 @@ import battleshipgame.Player;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 
 public class BattleshipBoard extends JFrame {
 
@@ -18,6 +19,13 @@ public class BattleshipBoard extends JFrame {
     private Player rivalActual;
     private boolean tutorial;
 
+    private JLabel lblIzq;
+    private JLabel lblDer;
+    private JLabel lblNombrePlayer;
+
+    private final Color COLOR_CYAN = Color.CYAN;
+    private final Color COLOR_ROJO = Color.RED;
+
     public BattleshipBoard(Battleship game, Player jugadorActual, Player rivalActual, boolean tutorial) {
         this.game = game;
         this.jugadorActual = jugadorActual;
@@ -25,8 +33,7 @@ public class BattleshipBoard extends JFrame {
         this.tutorial = tutorial;
 
         initComponentsManual();
-        actualizarCantNaves();
-        cargarTableros();
+        actualizarInterfazCompleta();
     }
 
     private void initComponentsManual() {
@@ -67,7 +74,7 @@ public class BattleshipBoard extends JFrame {
         lblTipoTitulo.setBounds(0, 15, 310, 25);
         jPanelInfo.add(lblTipoTitulo);
 
-        String modoTexto = tutorial ? "TUTORIAL" : "NORMAL";
+        String modoTexto = tutorial ? "TUTORIAL" : "ARCADE";
         JLabel lblModoValor = new JLabel(modoTexto);
         lblModoValor.setFont(new Font("Capture it", 0, 20));
         lblModoValor.setForeground(Color.WHITE);
@@ -103,17 +110,17 @@ public class BattleshipBoard extends JFrame {
 
         add(jPanelInfo);
 
-        // --- TABLERO JUGADOR ---
-        JLabel lblJ = new JLabel("TU FLOTA");
-        lblJ.setFont(new Font("Capture it", 1, 30));
-        lblJ.setForeground(Color.CYAN);
-        lblJ.setBounds(startX, startY - 50, 300, 40);
-        add(lblJ);
+        // --- TABLERO IZQUIERDA (JUGADOR ACTUAL) ---
+        lblIzq = new JLabel();
+        lblIzq.setFont(new Font("Capture it", 1, 30));
+        lblIzq.setForeground(COLOR_CYAN);
+        lblIzq.setBounds(startX, startY - 50, 400, 40);
+        add(lblIzq);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 JButton btn = new JButton();
-                btn.setBorder(BorderFactory.createLineBorder(new Color(168, 232, 255), 2));
+                btn.setBorder(new LineBorder(COLOR_CYAN, 2));
                 btn.setContentAreaFilled(false);
                 btn.setFocusPainted(false);
                 btn.setBounds(startX + (j * (btnWidth + gap)), startY + (i * (btnHeight + gap)), btnWidth, btnHeight);
@@ -122,18 +129,18 @@ public class BattleshipBoard extends JFrame {
             }
         }
 
-        // --- TABLERO RIVAL ---
+        // --- TABLERO DERECHA (RIVAL) ---
         int rivalStartX = startX + boardWidth + 70;
-        JLabel lblR = new JLabel("FLOTA RIVAL");
-        lblR.setFont(new Font("Capture it", 1, 30));
-        lblR.setForeground(new Color(201, 2, 35));
-        lblR.setBounds(rivalStartX, startY - 50, 300, 40);
-        add(lblR);
+        lblDer = new JLabel();
+        lblDer.setFont(new Font("Capture it", 1, 30));
+        lblDer.setForeground(COLOR_ROJO);
+        lblDer.setBounds(rivalStartX, startY - 50, 400, 40);
+        add(lblDer);
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 JButton btn = new JButton();
-                btn.setBorder(BorderFactory.createLineBorder(new Color(201, 2, 35), 2));
+                btn.setBorder(new LineBorder(COLOR_ROJO, 2));
                 btn.setContentAreaFilled(false);
                 btn.setFocusPainted(false);
                 btn.setBounds(rivalStartX + (j * (btnWidth + gap)), startY + (i * (btnHeight + gap)), btnWidth, btnHeight);
@@ -147,8 +154,8 @@ public class BattleshipBoard extends JFrame {
             }
         }
 
-        // --- LABEL NOMBRE Y RETIRARSE ---
-        JLabel lblNombrePlayer = new JLabel(jugadorActual.getUsername());
+        // --- NOMBRE Y RETIRARSE ---
+        lblNombrePlayer = new JLabel();
         lblNombrePlayer.setFont(new Font("Capture it", 1, 70));
         lblNombrePlayer.setForeground(Color.WHITE);
         lblNombrePlayer.setBounds(510, 90, 970, 60);
@@ -188,30 +195,27 @@ public class BattleshipBoard extends JFrame {
         add(backgroundLabel);
     }
 
-    // Método auxiliar imágenes
+    private void actualizarInterfazCompleta() {
+        lblIzq.setText("FLOTA " + jugadorActual.getUsername());
+        lblDer.setText("FLOTA " + rivalActual.getUsername());
+        lblNombrePlayer.setText(jugadorActual.getUsername());
+        actualizarCantNaves();
+        cargarTableros();
+    }
+
     private void establecerIcono(JButton btn, String codigo) {
         String ruta = "";
         switch (codigo) {
-            case "PA":
-                ruta = "/Images/portaavionesbrd.png";
-                break;
-            case "AZ":
-                ruta = "/Images/acorazadobrd.png";
-                break;
-            case "SM":
-                ruta = "/Images/submarinobrd.png";
-                break;
-            case "DT":
-                ruta = "/Images/destructorbrd.png";
-                break;
-            case "F":
-                ruta = "/Images/failedbrd.png";
-                break;
+            case "PA": ruta = "/Images/portaavionesbrd.png"; break;
+            case "AZ": ruta = "/Images/acorazadobrd.png"; break;
+            case "SM": ruta = "/Images/submarinobrd.png"; break;
+            case "DT": ruta = "/Images/destructorbrd.png"; break;
+            case "F": ruta = "/Images/failedbrd.png"; break; // Icono temporal de agua
             case "X":
                 btn.setText("X");
                 btn.setForeground(Color.RED);
                 btn.setFont(new Font("OCR A Extended", Font.BOLD, 40));
-                btn.setIcon(null); // Limpiar icono previo
+                btn.setIcon(null);
                 return;
             case "~":
                 btn.setIcon(null);
@@ -237,28 +241,23 @@ public class BattleshipBoard extends JFrame {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-
                 String valMio = miTablero[i][j];
-                if (valMio.equals("F")) {
-
-                    establecerIcono(playerBoard[i][j], "~");
-                } else if (valMio.equals("X")) {
-                    establecerIcono(playerBoard[i][j], "X");
-                } else if (!valMio.equals("~")) {
-                    establecerIcono(playerBoard[i][j], valMio);
-                } else {
-                    establecerIcono(playerBoard[i][j], "~");
-                }
+                establecerIcono(playerBoard[i][j], valMio);
 
                 String valRival = tableroEnemigo[i][j];
-                if (valRival.equals("F")) {
-
-                    establecerIcono(rivalBoard[i][j], "~");
-                } else if (valRival.equals("X")) {
+                
+                // Como ya no se guarda "F" en la matriz, solo verificamos "X" y barcos
+                if ("X".equals(valRival)) {
                     establecerIcono(rivalBoard[i][j], "X");
-                } else if (tutorial && !valRival.equals("~")) {
-                    establecerIcono(rivalBoard[i][j], valRival);
+                } else if (!valRival.equals("~")) {
+                    // Es un barco no dañado
+                    if (tutorial) {
+                        establecerIcono(rivalBoard[i][j], valRival);
+                    } else {
+                        establecerIcono(rivalBoard[i][j], "~"); // Ocultar barco intacto
+                    }
                 } else {
+                    // Es agua ("~")
                     establecerIcono(rivalBoard[i][j], "~");
                 }
             }
@@ -275,72 +274,51 @@ public class BattleshipBoard extends JFrame {
     }
 
     private void disparar(int fila, int col, JButton btn) {
-        if (btn.getText() != null && !btn.getText().isEmpty()) {
+        String[][] tableroEnemigo = (jugadorActual == game.getPlayer1()) ? game.getTableroP2() : game.getTableroP1();
+        String estadoCelda = tableroEnemigo[fila][col];
+
+        // Si ya hay un impacto (X) no se puede disparar de nuevo.
+        // Nota: Como "F" ya no se guarda, la celda será "~" y se podrá disparar de nuevo,
+        // lo cual cumple con el requisito de que el espacio queda libre.
+        if ("X".equals(estadoCelda)) {
             return;
         }
-
-        String[][] tableroEnemigo = (jugadorActual == game.getPlayer1()) ? game.getTableroP2() : game.getTableroP1();
-        String codigoBarcoGolpeado = tableroEnemigo[fila][col];
 
         int turnoActual = (jugadorActual == game.getPlayer1()) ? 1 : 2;
         String resultado = game.bombardear(turnoActual, fila, col);
 
         switch (resultado) {
             case "F":
+                // Mostrar aviso visual temporal de fallo
                 establecerIcono(btn, "F");
-                Timer timer = new Timer(1000, e -> {
-                    establecerIcono(btn, "~");
-                });
-                timer.setRepeats(false);
-                timer.start();
+                // Mostrar mensaje al usuario
+                JOptionPane.showMessageDialog(this, "¡Agua! No había ningún barco en esta celda.", "Fallo", JOptionPane.INFORMATION_MESSAGE);
+                // El espacio queda libre ("~") en la lógica, así que no necesitamos limpiar nada aquí.
+                // Al cambiar de turno y recargar, se verá agua ("~").
                 break;
 
             case "X":
                 establecerIcono(btn, "X");
-
-                TipoBarco barco = obtenerBarcoPorCodigo(codigoBarcoGolpeado);
-
-                if (barco != null) {
-                    // OBTENEMOS LOS ARREGLOS REALES DEL RIVAL
-                    TipoBarco[] lineupRival = (rivalActual == game.getPlayer1()) ? game.getLineupP1() : game.getLineupP2();
-                    int[] vidasRival = (rivalActual == game.getPlayer1()) ? game.getVidasP1() : game.getVidasP2();
-
-                    int vidasRestantes = 0;
-
-                    // BUSCAMOS EL BARCO ESPECÍFICO QUE FUE GOLPEADO
-                    // Recorremos el lineup para encontrar el barco que coincide con el código
-                    // Y que todavía tiene vidas (para diferenciar duplicados)
-                    for (int i = 0; i < lineupRival.length; i++) {
-                        if (lineupRival[i] != null
-                                && lineupRival[i].getCodigo().equals(codigoBarcoGolpeado)
-                                && vidasRival[i] > 0) {
-
-                            vidasRestantes = vidasRival[i];
-                            break; // Encontramos el barco correcto
-                        }
-                    }
-
-                    new GUIWarnings.MensajeImpacto(this,
-                            "¡Bombardeaste un " + barco.getNombreCompleto() + "!",
-                            "Faltan " + vidasRestantes + " intentos para hundirlo."
-                    );
-                }
+                int restantes = game.getLastHitRemainingLives();
+                String nombreBarco = game.getLastHitShipName();
+                
+                new GUIWarnings.MensajeImpacto(this, "¡IMPACTO!", 
+                    "Has bombardeado un " + nombreBarco + ". Faltan " + restantes + " intentos para hundirlo.").setVisible(true);
+                
+                cargarTableros(); 
                 break;
 
             case "N":
                 return;
 
-            default:
-                establecerIcono(btn, resultado);
+            default: // Hundido
+                establecerIcono(btn, "X");
                 TipoBarco barcoHundido = obtenerBarcoPorCodigo(resultado);
-
-                if (barcoHundido != null) {
-                    new GUIWarnings.MensajeImpacto(this,
-                            "¡Felicidades!",
-                            "Has hundido el " + barcoHundido.getNombreCompleto() + "."
-                    );
-                }
-
+                String nombreHundido = (barcoHundido != null) ? barcoHundido.getNombreCompleto() : resultado;
+                
+                new GUIWarnings.MensajeImpacto(this, "¡HUNDIDO!", 
+                    "Has hundido el " + nombreHundido + ".").setVisible(true);
+                
                 cargarTableros();
                 break;
         }
@@ -353,11 +331,16 @@ public class BattleshipBoard extends JFrame {
             new Winner(ganador.getUsername(), 3).setVisible(true);
             dispose();
         } else if (!resultado.equals("N")) {
-            // Usamos la ventana de cambio de turno corregida
-            new GUIWarnings.CambioTurno(this, rivalActual.getUsername());
+            // CAMBIO DE TURNO
+            Player temp = jugadorActual;
+            jugadorActual = rivalActual;
+            rivalActual = temp;
 
-            dispose();
-            new BattleshipBoard(game, rivalActual, jugadorActual, tutorial).setVisible(true);
+            new GUIWarnings.CambioTurno(this, rivalActual.getUsername()).setVisible(true);
+            
+            // Al actualizar la interfaz completa, si el resultado fue "F", 
+            // el botón volverá a ser agua ("~") porque no se guardó en la matriz.
+            actualizarInterfazCompleta();
         }
     }
 
@@ -370,9 +353,7 @@ public class BattleshipBoard extends JFrame {
         int count = 0;
         int[] vidas = (rivalActual == game.getPlayer1()) ? game.getVidasP1() : game.getVidasP2();
         for (int v : vidas) {
-            if (v > 0) {
-                count++;
-            }
+            if (v > 0) count++;
         }
         return count;
     }

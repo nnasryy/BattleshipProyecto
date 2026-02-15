@@ -57,6 +57,6 @@ public class MensajeImpacto extends JDialog {
         bg.setBounds(0, 0, 610, 280); 
         add(bg);
 
-        setVisible(true); // Al ser modal, el código se detiene aquí hasta cerrar
+        
     }
 }
