@@ -6,7 +6,6 @@ import battleshipgame.Player;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.BevelBorder;
-import org.w3c.dom.events.EventException;
 
 public class BattleshipBoard extends JFrame {
 
@@ -276,7 +275,6 @@ public class BattleshipBoard extends JFrame {
     }
 
     private void disparar(int fila, int col, JButton btn) {
-
         if (btn.getText() != null && !btn.getText().isEmpty()) {
             return;
         }
@@ -303,15 +301,29 @@ public class BattleshipBoard extends JFrame {
                 TipoBarco barco = obtenerBarcoPorCodigo(codigoBarcoGolpeado);
 
                 if (barco != null) {
+                    // OBTENEMOS LOS ARREGLOS REALES DEL RIVAL
+                    TipoBarco[] lineupRival = (rivalActual == game.getPlayer1()) ? game.getLineupP1() : game.getLineupP2();
                     int[] vidasRival = (rivalActual == game.getPlayer1()) ? game.getVidasP1() : game.getVidasP2();
-                    int indiceBarco = barco.ordinal();
-                    int vidasRestantes = vidasRival[indiceBarco];
 
-                    JOptionPane.showMessageDialog(this,
-                            "¡Bombardeaste un " + barco.getNombreCompleto() + "!\n"
-                            + "Faltan " + vidasRestantes + " intentos para hundirlo.",
-                            "Impacto Confirmado",
-                            JOptionPane.INFORMATION_MESSAGE);
+                    int vidasRestantes = 0;
+
+                    // BUSCAMOS EL BARCO ESPECÍFICO QUE FUE GOLPEADO
+                    // Recorremos el lineup para encontrar el barco que coincide con el código
+                    // Y que todavía tiene vidas (para diferenciar duplicados)
+                    for (int i = 0; i < lineupRival.length; i++) {
+                        if (lineupRival[i] != null
+                                && lineupRival[i].getCodigo().equals(codigoBarcoGolpeado)
+                                && vidasRival[i] > 0) {
+
+                            vidasRestantes = vidasRival[i];
+                            break; // Encontramos el barco correcto
+                        }
+                    }
+
+                    new GUIWarnings.MensajeImpacto(this,
+                            "¡Bombardeaste un " + barco.getNombreCompleto() + "!",
+                            "Faltan " + vidasRestantes + " intentos para hundirlo."
+                    );
                 }
                 break;
 
@@ -323,10 +335,10 @@ public class BattleshipBoard extends JFrame {
                 TipoBarco barcoHundido = obtenerBarcoPorCodigo(resultado);
 
                 if (barcoHundido != null) {
-                    JOptionPane.showMessageDialog(this,
-                            "¡Felicidades! Has hundido el " + barcoHundido.getNombreCompleto() + ".",
-                            "Nave Destruida",
-                            JOptionPane.WARNING_MESSAGE);
+                    new GUIWarnings.MensajeImpacto(this,
+                            "¡Felicidades!",
+                            "Has hundido el " + barcoHundido.getNombreCompleto() + "."
+                    );
                 }
 
                 cargarTableros();
@@ -341,7 +353,9 @@ public class BattleshipBoard extends JFrame {
             new Winner(ganador.getUsername(), 3).setVisible(true);
             dispose();
         } else if (!resultado.equals("N")) {
-            JOptionPane.showMessageDialog(this, "Turno de " + rivalActual.getUsername(), "Cambiar Jugador", JOptionPane.INFORMATION_MESSAGE);
+            // Usamos la ventana de cambio de turno corregida
+            new GUIWarnings.CambioTurno(this, rivalActual.getUsername());
+
             dispose();
             new BattleshipBoard(game, rivalActual, jugadorActual, tutorial).setVisible(true);
         }

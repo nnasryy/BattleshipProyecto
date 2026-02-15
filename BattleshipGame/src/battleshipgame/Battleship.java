@@ -123,16 +123,20 @@ public class Battleship {
     public int getIndiceActual(Player jugador) {
         return (jugador == player1) ? colocacionP1 : colocacionP2;
     }
-
+    
     public void colocarBarcoSimple(Player jugador, int fila, int col) {
         String[][] tablero = (jugador == player1) ? tableroP1 : tableroP2;
         TipoBarco[] lineup = (jugador == player1) ? lineupP1 : lineupP2;
         int[] vidas = (jugador == player1) ? vidasP1 : vidasP2;
         int indice = getIndiceActual(jugador);
+        
         if (indice >= lineup.length || lineup[indice] == null) return;
+        
         TipoBarco barco = lineup[indice];
         tablero[fila][col] = barco.getCodigo();
-        vidas[indice] = 1; // Vida inicial (1 impacto hunde)
+        
+        vidas[indice] = barco.getSize(); 
+        
         if (jugador == player1) colocacionP1++; else colocacionP2++;
     }
 
@@ -203,30 +207,27 @@ public class Battleship {
             return "F";
         }
 
-        // Impacto en barco
-        tableroObjetivo[fila][col] = "X"; 
-
-        // Buscar qué barco específico fue impactado (manejo de duplicados)
+    
         for (int i = 0; i < lineupObjetivo.length; i++) {
             if (lineupObjetivo[i] != null && lineupObjetivo[i].getCodigo().equals(celda) && vidasObjetivo[i] > 0) {
-                vidasObjetivo[i]--;
                 
-                if (vidasObjetivo[i] == 0) {
-                    randomizarFlota(victima);
+                vidasObjetivo[i]--; 
+                
+               
+                if (vidasObjetivo[i] == 0){
+                    tableroObjetivo[fila][col] = "X"; 
+                    
+                    randomizarFlota(victima); 
                     cambiarTurno();
-                    return celda; // Retornamos código para mensaje de hundido
+                    return celda; 
                 }
-                
-                // Si no se hundió, retornamos "X" (golpe normal)
-                // Importante: Salimos del loop aquí para no dañar otro barco con el mismo código
+         
                 cambiarTurno();
                 return "X"; 
             }
         }
         
-        // Si por alguna razón el código no coincidió con vidas > 0 (caso raro)
-        cambiarTurno();
-        return "X";
+        return "N";
     }
 
     private void cambiarTurno() { turno = (turno == 1) ? 2 : 1; }
