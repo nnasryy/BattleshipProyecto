@@ -15,12 +15,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
+
 /**
  *
  * @author nasry
  */
-public class PickerNave extends JFrame {
-
+public class PickerNave extends JFrame{
+    
     private Battleship game;
     private Player jugadorActual;
 
@@ -36,12 +37,12 @@ public class PickerNave extends JFrame {
 
         // Configuración del Frame
         setTitle("Battleship - Selección de Flota");
-        setSize(1330, 780);
+        setSize(1330, 780); 
         setLayout(null);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+
         initComponents();
 
         // IMPORTANTE: setVisible al final para evitar parpadeos
@@ -129,6 +130,7 @@ public class PickerNave extends JFrame {
     }
 
     // --- MÉTODOS AUXILIARES ---
+
     private void seleccionar(TipoBarco barco) {
         if (game.seleccionarBarco(jugadorActual, barco)) {
             areaSeleccion.append("- " + barco.getCodigo() + "\n"); // Solo muestra el código
@@ -137,21 +139,21 @@ public class PickerNave extends JFrame {
         }
     }
 
-    private void accionListo(ActionEvent e) {
-        if (!game.lineupCompleto(jugadorActual)) {
-            new CompletarFlota(); // Asegúrate de que sea visible
-            return;
-        }
-
-        this.dispose(); // Cerramos la actual
-        if (jugadorActual == game.getPlayer1()) {
-            new PickerNave(game, game.getPlayer2());
-        } else {
-           game.inicializarTableros();
-            new LineUpPosition(game, game.getPlayer1()).setVisible(true);
-        }
+ private void accionListo(ActionEvent e) {
+    if (!game.lineupCompleto(jugadorActual)) {
+        new CompletarFlota(); // Asegúrate de que sea visible
+        return;
     }
 
+    this.dispose(); // Cerramos la actual
+    if (jugadorActual == game.getPlayer1()) {
+        // Si terminó P1, le toca elegir naves al P2
+        new PickerNave(game, game.getPlayer2());
+    } else {
+        // Si ya terminó P2, pasamos a POSICIONAR las naves en el tablero
+        new LineUpPosition(game, game.getPlayer1());
+    }
+}
     private JButton crearBotonImagen(String ruta, int x, int y, int w, int h) {
         JButton btn = new JButton();
         try {
@@ -175,5 +177,5 @@ public class PickerNave extends JFrame {
         lbl.setBounds(x, y, w, h);
         add(lbl);
         return lbl;
-    }
+}
 }

@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import ENUM.DificultadJuego; // Asegúrate de que el Enum se llame así
 import battleshipgame.Battleship;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,31 +17,26 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-/**
- *
- * @author nasry
- */
-public class Dificultad extends JFrame{
-    
+public class Dificultad extends JFrame {
+
     private JPanel jPanel1;
     private JButton jButton1, jButton2, jButton3, jButton4, jButton5;
     private JLabel jLabel1, jLabel3;
     private Battleship game;
 
     public Dificultad(Battleship game) {
-        this.game=game;
+        this.game = game;
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     private void initComponents() {
-        // Configuración del JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(780, 590);
         setLayout(null);
         setResizable(false);
 
-        // --- PANEL NEGRO (jPanel1) ---
         jPanel1 = new JPanel();
         jPanel1.setBackground(new Color(0, 0, 0));
         jPanel1.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,
@@ -48,55 +44,55 @@ public class Dificultad extends JFrame{
         jPanel1.setLayout(null);
         jPanel1.setBounds(120, 90, 520, 430);
 
-        // Título "Dificultad"
         jLabel3 = new JLabel("Dificultad");
         jLabel3.setFont(new Font("Inlanders", Font.PLAIN, 52));
         jLabel3.setForeground(new Color(0, 255, 0));
         jLabel3.setBounds(120, 30, 270, 70);
         jPanel1.add(jLabel3);
 
-        // Botón: Easy - cinco barcos (jButton3)
+        // EASY - 5 Barcos
         jButton3 = createNeonButton("Easy - cinco barcos");
         jButton3.setBounds(100, 110, 300, 40);
-        jButton3.addActionListener(this::jButton3ActionPerformed);
+        jButton3.addActionListener(e -> seleccionarDificultad(DificultadJuego.EASY));
         jPanel1.add(jButton3);
 
-        // Botón: normal - cuatro barcos (jButton4)
+        // NORMAL - 4 Barcos
         jButton4 = createNeonButton("normal - cuatro barcos");
         jButton4.setBounds(100, 170, 300, 40);
-        jButton4.addActionListener(this::jButton4ActionPerformed);
+        jButton4.addActionListener(e -> seleccionarDificultad(DificultadJuego.NORMAL));
         jPanel1.add(jButton4);
 
-        // Botón: expert - dos barcos (jButton5)
-        // En tu swing original el alto era -1 (automático), aquí ponemos 40 por consistencia
+        // EXPERT - 2 Barcos
         jButton5 = createNeonButton("expert - dos barcos");
         jButton5.setBounds(100, 237, 300, 40);
-        jButton5.addActionListener(this::jButton5ActionPerformed);
+        jButton5.addActionListener(e -> seleccionarDificultad(DificultadJuego.EXPERT));
         jPanel1.add(jButton5);
 
-        // Botón: genius - un barco (jButton1)
+        // GENIUS - 1 Barco
         jButton1 = createNeonButton("genius - un barco");
         jButton1.setBounds(100, 290, 300, 40);
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        jButton1.addActionListener(e -> seleccionarDificultad(DificultadJuego.GENIUS));
         jPanel1.add(jButton1);
 
-        // Botón: salir (jButton2)
+        // SALIR
         jButton2 = createNeonButton("salir");
         jButton2.setBounds(20, 370, 160, 50);
         jButton2.addActionListener(this::jButton2ActionPerformed);
         jPanel1.add(jButton2);
 
-        // Agregar panel al frame
         add(jPanel1);
 
-        // --- FONDO (jLabel1) ---
         jLabel1 = new JLabel();
-        jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
+        try {
+            jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
+        } catch (Exception e) {
+            jLabel1.setOpaque(true);
+            jLabel1.setBackground(Color.DARK_GRAY);
+        }
         jLabel1.setBounds(0, 0, 780, 590);
         add(jLabel1);
     }
 
-    // Método para mantener el estilo neón uniforme
     private JButton createNeonButton(String text) {
         JButton btn = new JButton(text);
         btn.setBackground(new Color(34, 33, 33));
@@ -108,23 +104,21 @@ public class Dificultad extends JFrame{
         return btn;
     }
 
-    // --- MANEJADORES DE EVENTOS ---
-    private void jButton1ActionPerformed(ActionEvent evt) {
+    // Método unificado para cambiar dificultad y salir
+    private void seleccionarDificultad(DificultadJuego dif) {
+        // Asumiendo que Battleship tiene un método para recibir el Enum
+        // Si no, puedes pasar directamente el entero: game.setDificultad(dif.getCantidadBarcos());
+        game.setDificultad(dif); 
+        regresarAlMenu();
     }
 
     private void jButton2ActionPerformed(ActionEvent evt) {
-        new MenuPrincipal(game);
+        regresarAlMenu();
+    }
+    
+    private void regresarAlMenu() {
+        // Según tu instrucción, vuelve al SUB MENU DE CONFIGURACION
+        new Configuracion(game).setVisible(true); 
         this.dispose();
     }
-
-    private void jButton3ActionPerformed(ActionEvent evt) {
-    }
-
-    private void jButton4ActionPerformed(ActionEvent evt) {
-    }
-
-    private void jButton5ActionPerformed(ActionEvent evt) {
-    }
-
-    
 }
