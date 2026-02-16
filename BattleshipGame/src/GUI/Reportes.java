@@ -41,7 +41,7 @@ private Battleship game;
         setSize(780, 590);
         setLayout(null);
         setResizable(false);
-
+        setVisible(true);
         // --- PANEL CENTRAL (jPanel1) ---
         jPanel1 = new JPanel();
         jPanel1.setBackground(new Color(0, 0, 0));
@@ -98,6 +98,7 @@ private Battleship game;
     // --- ACCIONES DE LOS BOTONES ---
     private void jButton1ActionPerformed(ActionEvent evt) {
       new Ranking().setVisible(true);
+      this.dispose();
     }
 
     private void jButton2ActionPerformed(ActionEvent evt) {
@@ -106,6 +107,7 @@ private Battleship game;
     }
 
     private void jButton3ActionPerformed(ActionEvent evt) {
-        // Lógica para ver historial de juegos
+        new Ultimos10Juegos(game).setVisible(true);
+        this.dispose();
     }
 }

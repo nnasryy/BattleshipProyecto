@@ -5,6 +5,8 @@ import battleshipgame.Battleship;
 import battleshipgame.Player;
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
@@ -46,7 +48,6 @@ public class BattleshipBoard extends JFrame {
         int gap = 1;
         int boardWidth = (btnWidth * 8) + (gap * 7);
         int boardHeight = (btnHeight * 8) + (gap * 7);
-
         int totalContentW = (boardWidth * 2) + 70;
 
         GraphicsConfiguration gc = getGraphicsConfiguration();
@@ -173,12 +174,7 @@ public class BattleshipBoard extends JFrame {
         int btnRetY = startY + boardHeight + 20;
         btnRetirar.setBounds(btnRetX, btnRetY, btnRetW, btnRetH);
         btnRetirar.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(this, "¿Retirarse?", "Confirmar", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                rivalActual.agregarPuntos(3);
-                new Winner(rivalActual.getUsername(), 3).setVisible(true);
-                dispose();
-            }
+            new GUIWarnings.ConfirmarRetiro(game, jugadorActual, rivalActual, this).setVisible(true);
         });
         add(btnRetirar);
 
@@ -210,7 +206,7 @@ public class BattleshipBoard extends JFrame {
             case "AZ": ruta = "/Images/acorazadobrd.png"; break;
             case "SM": ruta = "/Images/submarinobrd.png"; break;
             case "DT": ruta = "/Images/destructorbrd.png"; break;
-            case "F": ruta = "/Images/failedbrd.png"; break; // Icono temporal de agua
+            case "F": ruta = "/Images/failedbrd.png"; break; // Imagen temporal de fallo
             case "X":
                 btn.setText("X");
                 btn.setForeground(Color.RED);
@@ -245,20 +241,15 @@ public class BattleshipBoard extends JFrame {
                 establecerIcono(playerBoard[i][j], valMio);
 
                 String valRival = tableroEnemigo[i][j];
-                
-                // Como ya no se guarda "F" en la matriz, solo verificamos "X" y barcos
-                if ("X".equals(valRival)) {
-                    establecerIcono(rivalBoard[i][j], "X");
-                } else if (!valRival.equals("~")) {
-                    // Es un barco no dañado
+                // La matriz solo tiene "~" o Codigos de barco vivo.
+                if ("~".equals(valRival)) {
+                    establecerIcono(rivalBoard[i][j], "~");
+                } else {
                     if (tutorial) {
                         establecerIcono(rivalBoard[i][j], valRival);
                     } else {
                         establecerIcono(rivalBoard[i][j], "~"); // Ocultar barco intacto
                     }
-                } else {
-                    // Es agua ("~")
-                    establecerIcono(rivalBoard[i][j], "~");
                 }
             }
         }
@@ -274,51 +265,40 @@ public class BattleshipBoard extends JFrame {
     }
 
     private void disparar(int fila, int col, JButton btn) {
-        String[][] tableroEnemigo = (jugadorActual == game.getPlayer1()) ? game.getTableroP2() : game.getTableroP1();
-        String estadoCelda = tableroEnemigo[fila][col];
-
-        // Si ya hay un impacto (X) no se puede disparar de nuevo.
-        // Nota: Como "F" ya no se guarda, la celda será "~" y se podrá disparar de nuevo,
-        // lo cual cumple con el requisito de que el espacio queda libre.
-        if ("X".equals(estadoCelda)) {
-            return;
-        }
-
         int turnoActual = (jugadorActual == game.getPlayer1()) ? 1 : 2;
         String resultado = game.bombardear(turnoActual, fila, col);
 
         switch (resultado) {
             case "F":
-                // Mostrar aviso visual temporal de fallo
+                // FALLO
                 establecerIcono(btn, "F");
-                // Mostrar mensaje al usuario
-                JOptionPane.showMessageDialog(this, "¡Agua! No había ningún barco en esta celda.", "Fallo", JOptionPane.INFORMATION_MESSAGE);
-                // El espacio queda libre ("~") en la lógica, así que no necesitamos limpiar nada aquí.
-                // Al cambiar de turno y recargar, se verá agua ("~").
+                new GUIWarnings.MensajeImpacto(this, "FALLO", "Agua... No habia nada.").setVisible(true);
+                // Al cambiar turno, actualizarInterfazCompleta limpiara el icono "F"
                 break;
 
             case "X":
-                establecerIcono(btn, "X");
+                // IMPACTO (Vidas restantes > 0)
+                String nombre = game.getLastHitShipName();
                 int restantes = game.getLastHitRemainingLives();
-                String nombreBarco = game.getLastHitShipName();
                 
-                new GUIWarnings.MensajeImpacto(this, "¡IMPACTO!", 
-                    "Has bombardeado un " + nombreBarco + ". Faltan " + restantes + " intentos para hundirlo.").setVisible(true);
+                // Mensaje detallado
+                new GUIWarnings.MensajeImpacto(this, "IMPACTO", "Has bombardeado un " + nombre + ". Faltan " + restantes + " bombardeos.").setVisible(true);
                 
-                cargarTableros(); 
+                // Recargamos tableros para ver las NUEVAS posiciones
+                cargarTableros();
                 break;
 
             case "N":
                 return;
 
-            default: // Hundido
-                establecerIcono(btn, "X");
+            default: // HUNDIDO
                 TipoBarco barcoHundido = obtenerBarcoPorCodigo(resultado);
                 String nombreHundido = (barcoHundido != null) ? barcoHundido.getNombreCompleto() : resultado;
                 
-                new GUIWarnings.MensajeImpacto(this, "¡HUNDIDO!", 
-                    "Has hundido el " + nombreHundido + ".").setVisible(true);
+                // Mensaje detallado
+                new GUIWarnings.MensajeImpacto(this, "HUNDIDO", "Has destruido el " + nombreHundido + ".").setVisible(true);
                 
+                // Recargamos tableros. El barco hundido ya no aparecera (sin vidas).
                 cargarTableros();
                 break;
         }
@@ -327,8 +307,18 @@ public class BattleshipBoard extends JFrame {
 
         if (game.hayGanador()) {
             Player ganador = game.getGanador();
+            Player perdedor = (ganador == game.getPlayer1()) ? game.getPlayer2() : game.getPlayer1();
+
+            String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+            String modo = game.getDificultad().toString();
+
+            String registro = fecha + " - " + ganador.getUsername() + " hundio todos los barcos de " + perdedor.getUsername() + " en modo " + modo + ".";
+
+            ganador.agregarAlHistorial(registro);
+            perdedor.agregarAlHistorial(registro);
+
             ganador.agregarPuntos(3);
-            new Winner(ganador.getUsername(), 3).setVisible(true);
+            new Winner(ganador.getUsername(), 3, game).setVisible(true);
             dispose();
         } else if (!resultado.equals("N")) {
             // CAMBIO DE TURNO
@@ -336,10 +326,7 @@ public class BattleshipBoard extends JFrame {
             jugadorActual = rivalActual;
             rivalActual = temp;
 
-            new GUIWarnings.CambioTurno(this, rivalActual.getUsername()).setVisible(true);
-            
-            // Al actualizar la interfaz completa, si el resultado fue "F", 
-            // el botón volverá a ser agua ("~") porque no se guardó en la matriz.
+            new GUIWarnings.CambioTurno(this, rivalActual.getUsername());
             actualizarInterfazCompleta();
         }
     }

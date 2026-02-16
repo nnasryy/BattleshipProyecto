@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUI;
 
+import battleshipgame.Battleship;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -17,30 +14,28 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-/**
- *
- * @author nasry
- */
-public class Winner extends JFrame{
-    
+
+public class Winner extends JFrame {
+
     private JLabel lblFelicidades, lblMensaje, backgroundLabel;
     private JPanel panelMensaje;
+    private Battleship game;
 
-    public Winner(String winnerName, int puntos) {
+    public Winner(String winnerName, int puntos, Battleship game) {
+        this.game = game;
         initComponents();
-        setWinnerData(winnerName, puntos); // Siempre 3 puntos según instrucciones
+        setWinnerData(winnerName, puntos); 
         this.setLocationRelativeTo(null);
         setVisible(true);
     }
 
     private void initComponents() {
-        // Configuración del JFrame
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 650);
         setLayout(null);
         setResizable(false);
 
-        // --- TÍTULO "FELICIDADES" (Imagen) ---
+        // --- TÍTULO "FELICIDADES" ---
         lblFelicidades = new JLabel();
         try {
             lblFelicidades.setIcon(new ImageIcon(getClass().getResource("/Images/¡FELICIDADES!.png")));
@@ -68,7 +63,7 @@ public class Winner extends JFrame{
 
         add(panelMensaje);
 
-        // --- BOTÓN ATRÁS (regresa al Menú Principal) ---
+        // --- BOTÓN ATRÁS ---
         JButton btnAtras = new JButton("ATRÁS");
         btnAtras.setBackground(new Color(102, 0, 0));
         btnAtras.setFont(new Font("Capture it", Font.PLAIN, 36));
@@ -90,19 +85,19 @@ public class Winner extends JFrame{
             backgroundLabel.setOpaque(true);
         }
         backgroundLabel.setBounds(0, 0, 800, 650);
+        
+   
         add(backgroundLabel);
-        getContentPane().setComponentZOrder(backgroundLabel, 0);
+        
+    
     }
 
-    // Actualiza dinámicamente el mensaje de victoria
     public void setWinnerData(String name, int puntos) {
         lblMensaje.setText(name + " HA GANADO " + puntos + " PUNTOS");
     }
 
-    // Acción al cerrar la ventana, vuelve al menú principal
     private void volverMenuPrincipal(ActionEvent evt) {
         this.dispose();
-        // Aquí va tu lógica para abrir el Menú Principal
-        // Ejemplo: new MenuPrincipal().setVisible(true);
+        new MenuPrincipal(this.game).setVisible(true);
     }
 }

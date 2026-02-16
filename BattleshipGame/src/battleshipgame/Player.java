@@ -13,7 +13,8 @@ import java.util.ArrayList;
 public class Player {
 
     private static ArrayList<Player> players = new ArrayList<>();
-
+private ArrayList<String> historialPartidas = new ArrayList<>();
+    
     private String username;
     private String password;
     private int puntos;
@@ -99,6 +100,17 @@ public static Player getPlayerByUsername(String username) {
     //====ELIMINAR CUENTA=====
     public static void eliminarPlayer(Player p) {
     players.remove(p);
+}
+    //===HISTORIAL===
+    public void agregarAlHistorial(String registro) {
+    if (historialPartidas.size() >= 10) {
+        historialPartidas.remove(0);
+    }
+    historialPartidas.add(registro);
+}
+
+public ArrayList<String> getHistorialPartidas() {
+    return historialPartidas;
 }
 }
 
