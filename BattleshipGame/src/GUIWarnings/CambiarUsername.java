@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUIWarnings;
 
 import battleshipgame.Battleship;
@@ -85,19 +81,24 @@ public class CambiarUsername extends JFrame{
     }
 
     private void jButton1ActionPerformed(ActionEvent evt) {
-      String nuevoUser = jTextField2.getText().trim();
+        String nuevoUser = jTextField2.getText().trim();
+        String usuarioActual = game.getCurrentUser().getUsername();
         
+        // 1. Validar longitud
         if (!battleshipgame.Player.lengthValido(nuevoUser)) {
-          new MinimoCaracteres();
+            new MinimoCaracteres();
             return;
         }
 
-        if (battleshipgame.Player.usernameExists(nuevoUser)) {
+        // 2. Validar existencia (LÓGICA CORREGIDA)
+        // Si el nombre ya existe Y no es mi propio nombre, entonces error.
+        if (battleshipgame.Player.usernameExists(nuevoUser) && !nuevoUser.equals(usuarioActual)) {
             new SameUsername();
-                     return;
+            return;
         }
 
+        // 3. Si pasa las validaciones, cambiar
         game.getCurrentUser().setUsername(nuevoUser);
         this.dispose();
-        }
+    }
 }

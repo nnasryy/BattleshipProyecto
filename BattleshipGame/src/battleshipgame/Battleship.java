@@ -37,7 +37,6 @@ public class Battleship {
         this.modoTutorial = true;
     }
 
-    // Getters y Setters (Mantener los existentes)
     public void setModoTutorial(boolean modo) { this.modoTutorial = modo; }
     public void setDificultad(DificultadJuego nuevaDif) { this.dificultad = nuevaDif; }
     public DificultadJuego getDificultad() { return dificultad; }
@@ -54,7 +53,12 @@ public class Battleship {
     public int getTurno() { return turno; }
     public int getLastHitRemainingLives() { return lastHitRemainingLives; }
     public String getLastHitShipName() { return lastHitShipName; }
-
+public void setCurrentUser(Player user) {
+        this.currentUser = user;
+    }
+public Player getCurrentUser() {
+        return this.currentUser;
+    }
     public void iniciarPartida(Player p1, Player p2) {
         this.player1 = p1;
         this.player2 = p2;
@@ -138,25 +142,23 @@ public class Battleship {
         return (jugador == player1) ? colocacionP1 == limite : colocacionP2 == limite;
     }
 
-    // --- LÓGICA DE BATALLA DINÁMICA ---
 
-    // Método para regenerar el tablero con barcos vivos en posiciones aleatorias
     private void randomizarFlota(Player jugador) {
         String[][] tablero = (jugador == player1) ? tableroP1 : tableroP2;
         TipoBarco[] lineup = (jugador == player1) ? lineupP1 : lineupP2;
         int[] vidas = (jugador == player1) ? vidasP1 : vidasP2;
 
-        // 1. Limpiar el tablero completamente
+
         limpiarTableroRec(0, 0, tablero);
 
-        // 2. Colocar aleatoriamente SOLO los barcos que tienen vidas > 0
+
         for (int i = 0; i < lineup.length; i++) {
             if (lineup[i] != null && vidas[i] > 0) {
                 boolean colocado = false;
                 while (!colocado) {
                     int f = rand.nextInt(8);
                     int c = rand.nextInt(8);
-                    // Buscar casilla vacía
+         
                     if ("~".equals(tablero[f][c])) {
                         tablero[f][c] = lineup[i].getCodigo();
                         colocado = true;
@@ -174,35 +176,35 @@ public class Battleship {
 
         String celda = tableroObjetivo[fila][col];
 
-        // Caso: Agua (~)
+      
         if ("~".equals(celda)) {
             lastHitRemainingLives = -1;
             lastHitShipName = "";
             cambiarTurno();
-            return "F"; // Fallo
+            return "F"; 
         }
 
-        // Caso: Impacto en barco
+
         for (int i = 0; i < lineupObjetivo.length; i++) {
             if (lineupObjetivo[i] != null && lineupObjetivo[i].getCodigo().equals(celda) && vidasObjetivo[i] > 0) {
                 
-                vidasObjetivo[i]--; // Resta vida
+                vidasObjetivo[i]--; 
                 
-                // Guardamos info para la GUI
+             
                 lastHitRemainingLives = vidasObjetivo[i];
                 lastHitShipName = lineupObjetivo[i].getNombreCompleto();
                 
-                // REGLA: El tablero se regenera siempre que se bombardea un barco (impacto o hundido)
+         
                 randomizarFlota(victima);
 
                 cambiarTurno();
 
                 if (vidasObjetivo[i] == 0) {
-                    // Hundido
-                    return celda; // Retorna código
+                
+                    return celda; 
                 }
          
-                return "X"; // Impacto pero no hundido
+                return "X"; 
             }
         }
         
@@ -224,5 +226,5 @@ public class Battleship {
         return false;
     }
     public void logout() { currentUser = null; }
-    public Player getCurrentUser() { return currentUser; }
+   
 }

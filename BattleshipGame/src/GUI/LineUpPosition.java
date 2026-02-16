@@ -69,26 +69,26 @@ public class LineUpPosition extends javax.swing.JFrame {
         jPanel1.setLayout(null);
         jPanel1.setBounds(90, 100, 960, 660);
 
-        jLabel3 = new JLabel("TURNO DE PLAYER:");
+  jLabel3 = new JLabel("TURNO DE PLAYER:");
         jLabel3.setFont(new Font("Inlanders", 1, 36));
         jLabel3.setForeground(new Color(0, 204, 0));
-        jLabel3.setBounds(50, 30, 400, 50);
+        jLabel3.setBounds(50, 30, 400, 50); // Posición inicial arriba
         jPanel1.add(jLabel3);
-
+        
         user = new JLabel("Player name");
         estiloLabel(user);
-        user.setBounds(365, 25, 340, 60);
+        user.setBounds(460, 25, 340, 60);
         jPanel1.add(user);
 
-        lblInstruccion = new JLabel("selecciona una celda para:");
-        lblInstruccion.setFont(new Font("OCR A Extended", 1, 18));
+     lblInstruccion = new JLabel("selecciona una celda para:");
+        lblInstruccion.setFont(new Font("Inlanders", 1, 28));
         lblInstruccion.setForeground(new Color(0, 204, 0));
-        lblInstruccion.setBounds(405, 55, 300, 30);
+        lblInstruccion.setBounds(50, 80, 400, 40); 
         jPanel1.add(lblInstruccion);
 
         nave = new JLabel("nombre nave");
         estiloLabel(nave);
-        nave.setBounds(405, 85, 340, 60); 
+        nave.setBounds(460, 75, 340, 60); 
         jPanel1.add(nave);
 
         // --- MATRIZ DE BOTONES ---

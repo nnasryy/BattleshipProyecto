@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUIWarnings;
 
 import battleshipgame.Battleship;
@@ -67,6 +63,7 @@ public class CambiarPassword extends JFrame{
         jButton1.setBounds(310, 210, 170, 50);
         jButton1.addActionListener(this::jButton1ActionPerformed);
         add(jButton1);
+        
         btnSalir = new JButton("SALIR");
         btnSalir.setBackground(new Color(34, 33, 33));
         btnSalir.setFont(new Font("Cold Warm", Font.PLAIN, 24));
@@ -78,6 +75,7 @@ public class CambiarPassword extends JFrame{
         btnSalir.setBounds(110, 210, 170, 50);
         btnSalir.addActionListener(e -> this.dispose());
         add(btnSalir);
+        
         jLabel1 = new JLabel();
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/joprep.png")));
         jLabel1.setBounds(0, 0, 610, 280);
@@ -86,13 +84,14 @@ public class CambiarPassword extends JFrame{
 
     private void jButton1ActionPerformed(ActionEvent evt) {
         String nuevaPass = jTextField2.getText().trim();
-    if (!battleshipgame.Player.lengthValido(nuevaPass)) {
-          new MinimoCaracteres();
+        
+        if (!battleshipgame.Player.lengthValido(nuevaPass)) {
+            new MinimoCaracteres();
             return;
         }
-        if (battleshipgame.Player.lengthValido(nuevaPass)) {
-            game.getCurrentUser().setPassword(nuevaPass);
-            this.dispose();
-        }
+        
+        // Si es válido, actualizamos
+        game.getCurrentUser().setPassword(nuevaPass);
+        this.dispose();
     }
 }

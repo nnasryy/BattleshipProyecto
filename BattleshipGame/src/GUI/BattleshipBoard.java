@@ -270,21 +270,14 @@ public class BattleshipBoard extends JFrame {
 
         switch (resultado) {
             case "F":
-                // FALLO
                 establecerIcono(btn, "F");
                 new GUIWarnings.MensajeImpacto(this, "FALLO", "Agua... No habia nada.").setVisible(true);
-                // Al cambiar turno, actualizarInterfazCompleta limpiara el icono "F"
                 break;
 
             case "X":
-                // IMPACTO (Vidas restantes > 0)
                 String nombre = game.getLastHitShipName();
                 int restantes = game.getLastHitRemainingLives();
-                
-                // Mensaje detallado
                 new GUIWarnings.MensajeImpacto(this, "IMPACTO", "Has bombardeado un " + nombre + ". Faltan " + restantes + " bombardeos.").setVisible(true);
-                
-                // Recargamos tableros para ver las NUEVAS posiciones
                 cargarTableros();
                 break;
 
@@ -294,11 +287,7 @@ public class BattleshipBoard extends JFrame {
             default: // HUNDIDO
                 TipoBarco barcoHundido = obtenerBarcoPorCodigo(resultado);
                 String nombreHundido = (barcoHundido != null) ? barcoHundido.getNombreCompleto() : resultado;
-                
-                // Mensaje detallado
                 new GUIWarnings.MensajeImpacto(this, "HUNDIDO", "Has destruido el " + nombreHundido + ".").setVisible(true);
-                
-                // Recargamos tableros. El barco hundido ya no aparecera (sin vidas).
                 cargarTableros();
                 break;
         }
@@ -318,6 +307,7 @@ public class BattleshipBoard extends JFrame {
             perdedor.agregarAlHistorial(registro);
 
             ganador.agregarPuntos(3);
+            // Aquí el ganador se obtiene directamente del objeto game, así que es correcto
             new Winner(ganador.getUsername(), 3, game).setVisible(true);
             dispose();
         } else if (!resultado.equals("N")) {
@@ -326,7 +316,9 @@ public class BattleshipBoard extends JFrame {
             jugadorActual = rivalActual;
             rivalActual = temp;
 
-            new GUIWarnings.CambioTurno(this, rivalActual.getUsername());
+            // CORRECCIÓN: Se pasa 'jugadorActual' porque es el turno del NUEVO jugador
+            new GUIWarnings.CambioTurno(this, jugadorActual.getUsername());
+            
             actualizarInterfazCompleta();
         }
     }

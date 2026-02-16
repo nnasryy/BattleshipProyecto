@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package GUI;
 
 import battleshipgame.Battleship;
@@ -16,6 +20,10 @@ import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
+/**
+ *
+ * @author nasry
+ */
 public class Ultimos10Juegos extends JFrame {
 
     private JPanel jPanel1;
@@ -26,7 +34,6 @@ public class Ultimos10Juegos extends JFrame {
 
     private Battleship game;
 
-    // Constructor modificado para recibir el objeto Battleship
     public Ultimos10Juegos(Battleship game) {
         this.game = game;
         initComponents();
@@ -58,15 +65,13 @@ public class Ultimos10Juegos extends JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new Color(23, 24, 24));
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new Font("OCR A Extended", Font.BOLD, 18)); // Un poco más pequeño para que quepan las fechas
+        jTextArea1.setFont(new Font("OCR A Extended", Font.BOLD, 18));
         jTextArea1.setForeground(new Color(0, 255, 0));
         jTextArea1.setRows(5);
         jTextArea1.setAutoscrolls(false);
         jTextArea1.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,
                 null, null, new Color(0, 204, 0), new Color(0, 204, 0)));
         jTextArea1.setDisabledTextColor(new Color(0, 255, 0));
-
-        // Hacemos el textArea transparente al scroll para que se vea bien
         jTextArea1.setOpaque(true);
 
         jScrollPane1 = new JScrollPane(jTextArea1);
@@ -98,29 +103,36 @@ public class Ultimos10Juegos extends JFrame {
     }
 
     private void cargarDatos() {
-        Player currentUser = game.getCurrentUser();
         StringBuilder sb = new StringBuilder();
-
-        if (currentUser != null && currentUser.getHistorialPartidas() != null) {
-            int contador = 1;
-
-            for (int i = currentUser.getHistorialPartidas().size() - 1; i >= 0; i--) {
-                sb.append(contador).append("- ").append(currentUser.getHistorialPartidas().get(i)).append("\n");
-                contador++;
-            }
-
-            if (currentUser.getHistorialPartidas().isEmpty()) {
-                sb.append("No hay partidas registradas aún.");
-            }
+        
+        // CORRECCIÓN: Validación de seguridad
+        if (this.game == null) {
+            sb.append("Error crítico: La sesión no existe (game es null).");
+        } else if (this.game.getCurrentUser() == null) {
+            sb.append("Error: No hay usuario logueado.");
         } else {
-            sb.append("Error al cargar historial.");
-        }
+            Player currentUser = this.game.getCurrentUser();
+            if (currentUser.getHistorialPartidas() != null) {
+                int contador = 1;
+                // Iterar al revés para mostrar los más recientes primero
+                for (int i = currentUser.getHistorialPartidas().size() - 1; i >= 0; i--) {
+                    sb.append(contador).append("- ").append(currentUser.getHistorialPartidas().get(i)).append("\n");
+                    contador++;
+                }
 
+                if (currentUser.getHistorialPartidas().isEmpty()) {
+                    sb.append("No hay partidas registradas aún.");
+                }
+            } else {
+                sb.append("Historial vacío.");
+            }
+        }
         jTextArea1.setText(sb.toString());
     }
 
     private void jButton2ActionPerformed(ActionEvent evt) {
         this.dispose();
-        new Reportes(game);
+        // CORRECCIÓN: Pasar 'game' de vuelta a Reportes
+        new Reportes(this.game).setVisible(true);
     }
 }

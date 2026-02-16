@@ -109,19 +109,17 @@ public class LogIn {
                 null, null, Color.GREEN, Color.GREEN));
         mainPanel.add(nextBtn);
 
-        // Agregar el panel al frame
         frame.add(mainPanel);
 
-        // --- IMAGEN DE FONDO ---
         JLabel bg = new JLabel(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
         bg.setBounds(0, 0, 776, 590);
         frame.add(bg);
 
-        // --- ACCIONES ---
         showPass.addActionListener(e -> {
             passField.setEchoChar(showPass.isSelected() ? (char) 0 : defaultEcho);
         });
 
+        // --- ACCIÓN CORREGIDA ---
         nextBtn.addActionListener(e -> {
             String user = userField.getText().trim();
             String pass = new String(passField.getPassword()).trim();
@@ -131,17 +129,22 @@ public class LogIn {
                 return;
             }
 
-        battleshipgame.Battleship game = new battleshipgame.Battleship();
+            // 1. Intentamos obtener el objeto Player directamente
+            Player jugadorLogueado = Player.login(user, pass);
 
+            if (jugadorLogueado != null) {
+                // 2. Creamos el juego
+                battleshipgame.Battleship game = new battleshipgame.Battleship();
+                
+                // 3. CLAVE: Le decimos al juego QUIÉN es el usuario actual
+                game.setCurrentUser(jugadorLogueado);
 
-    if (game.login(user, pass)) {
-        frame.dispose();
-
-        new MenuPrincipal(game); 
-    } else {
-        new PlayerNotFound();
-    }
-});
+                frame.dispose();
+                new MenuPrincipal(game); 
+            } else {
+                new PlayerNotFound();
+            }
+        });
 
         exitBtn.addActionListener(e -> {
             frame.dispose();

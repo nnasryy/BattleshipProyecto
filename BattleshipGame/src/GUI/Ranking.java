@@ -34,7 +34,8 @@ public class Ranking extends JFrame {
     private JTextArea jTextArea1;
     private Battleship game;
 
-    public Ranking() {
+    public Ranking(Battleship game) {
+        this.game = game;
         initComponents();
         cargarRanking();
         this.setLocationRelativeTo(null);
@@ -126,8 +127,8 @@ public class Ranking extends JFrame {
     }
 
     private void jButton2ActionPerformed(ActionEvent evt) {
-        this.dispose();
-        new Reportes(game);
+        new Reportes(this.game).setVisible(true);
+           this.dispose();
     }
 
     /**

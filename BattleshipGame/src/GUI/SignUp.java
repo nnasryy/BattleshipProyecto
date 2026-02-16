@@ -2,6 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package GUI;
 
 import GUIWarnings.MinimoCaracteres;
@@ -121,6 +125,7 @@ public class SignUp {
             passField.setEchoChar(showPass.isSelected() ? (char) 0 : defaultEcho);
         });
 
+        // --- ACCIÓN CORREGIDA ---
         nextBtn.addActionListener(e -> {
             String user = userField.getText().trim();
             String pass = new String(passField.getPassword()).trim();
@@ -135,14 +140,19 @@ public class SignUp {
                 return;
             }
 
+            // 1. Registramos
             Player.registrar(user, pass);
 
-            battleshipgame.Battleship game = new battleshipgame.Battleship();
+            // 2. Obtenemos el objeto Player recién creado
+            Player nuevoJugador = Player.login(user, pass);
 
-            game.login(user, pass);
+            // 3. Creamos el juego y seteamos el usuario
+            battleshipgame.Battleship game = new battleshipgame.Battleship();
+            if (nuevoJugador != null) {
+                game.setCurrentUser(nuevoJugador);
+            }
 
             frame.dispose();
-
             new MenuPrincipal(game);
         });
 

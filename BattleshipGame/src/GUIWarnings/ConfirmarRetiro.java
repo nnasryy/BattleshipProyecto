@@ -47,7 +47,7 @@ public class ConfirmarRetiro extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // No cerrar con la X, usar botones
 
-        JLabel txt = new JLabel("¿RETIRARSE DEL JUEGO?");
+        JLabel txt = new JLabel("RETIRARSE DEL JUEGO?");
         txt.setFont(new Font("Cold Warm", Font.PLAIN, 36)); // Ajusté un poco el tamaño
         txt.setForeground(Color.GREEN); 
         txt.setBounds(100, 120, 450, 40);

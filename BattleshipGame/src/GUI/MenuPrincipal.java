@@ -111,7 +111,7 @@ public class MenuPrincipal extends JFrame {
         btnPerfil = crearBoton("MI PERFIL", fontBotones, fondoBtn, textoBtn, 450, 520, 410, 60);
         btnPerfil.addActionListener(e -> {
             // CAMBIO: Ahora llama a MiPerfil, no a VerMisDatos directamente
-            new MiPerfil(this.game);
+            new MiPerfil(this.game).setVisible(true);
             this.dispose();
         });
 
