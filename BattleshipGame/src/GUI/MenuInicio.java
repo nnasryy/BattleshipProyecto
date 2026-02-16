@@ -16,7 +16,7 @@ import javax.swing.JLabel;
  * @author nasry
  */
 public class MenuInicio {
-    
+
     private JFrame frame;
 
     public MenuInicio() {
@@ -47,12 +47,10 @@ public class MenuInicio {
         exitBtn.setForeground(new Color(255, 204, 204));
         frame.add(exitBtn);
 
-        // Intenta usar la ruta relativa estándar para evitar errores de carga
         JLabel bg = new JLabel(new ImageIcon("src/Images/mainMenu.png"));
         bg.setBounds(0, 0, 779, 590);
         frame.add(bg);
 
-        // ACCIONES
         loginBtn.addActionListener(e -> {
             frame.dispose();
             new LogIn();
@@ -66,7 +64,6 @@ public class MenuInicio {
         exitBtn.addActionListener(e -> System.exit(0));
 
         frame.setVisible(true);
- 
- 
+
     }
 }

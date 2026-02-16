@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -27,7 +27,7 @@ import javax.swing.border.BevelBorder;
  * @author nasry
  */
 public class Reportes extends JFrame {
-    
+
     private Battleship game;
     private JPanel jPanel3;
     private JButton jButton1, jButton2, jButton3;
@@ -45,7 +45,6 @@ public class Reportes extends JFrame {
         setLayout(null);
         setResizable(false);
 
-        // --- PANEL DE OPCIONES ---
         jPanel3 = new JPanel();
         jPanel3.setBackground(new Color(0, 0, 0));
         jPanel3.setBorder(BorderFactory.createBevelBorder(
@@ -54,7 +53,6 @@ public class Reportes extends JFrame {
         jPanel3.setLayout(null);
         jPanel3.setBounds(120, 90, 520, 430);
 
-        // Título
         jLabel5 = new JLabel("reportes");
         jLabel5.setFont(new Font("Inlanders", Font.PLAIN, 36));
         jLabel5.setForeground(new Color(0, 255, 0));
@@ -62,7 +60,6 @@ public class Reportes extends JFrame {
         jLabel5.setBounds(80, 30, 370, 70);
         jPanel3.add(jLabel5);
 
-        // Botones
         jButton3 = createNeonButton("descripcion de mis ultimos diez juegos");
         jButton3.setBounds(20, 120, 460, 60);
         jButton3.addActionListener(this::jButton3ActionPerformed);
@@ -78,8 +75,7 @@ public class Reportes extends JFrame {
         jButton2.addActionListener(this::jButton2ActionPerformed);
         jPanel3.add(jButton2);
         add(jPanel3);
-        
-         // --- IMAGEN DE FONDO ---
+
         jLabel1 = new JLabel();
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
         jLabel1.setBounds(0, 0, 780, 590);
@@ -97,26 +93,21 @@ public class Reportes extends JFrame {
         return btn;
     }
 
-    // --- ACCIONES DE BOTONES ---
-    
-    // Ranking
     private void jButton1ActionPerformed(ActionEvent evt) {
-        // CORRECCIÓN: Pasar 'game' para no perder la sesión
-        new Ranking(this.game).setVisible(true); 
+
+        new Ranking(this.game).setVisible(true);
         this.dispose();
     }
 
-    // Salir (vuelve al menú)
     private void jButton2ActionPerformed(ActionEvent evt) {
         new MenuPrincipal(this.game);
         this.dispose();
     }
 
-    // Últimos 10 juegos
     private void jButton3ActionPerformed(ActionEvent evt) {
-        // CORRECCIÓN: Asegurarse de pasar 'this.game'
+
         new Ultimos10Juegos(this.game).setVisible(true);
         this.dispose();
     }
-    
+
 }

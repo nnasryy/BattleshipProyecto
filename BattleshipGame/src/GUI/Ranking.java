@@ -42,14 +42,13 @@ public class Ranking extends JFrame {
     }
 
     private void initComponents() {
-        // Configuración del JFrame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(780, 590);
         setLayout(null);
         setResizable(false);
         this.game = game;
 
-        // --- PANEL CENTRAL (jPanel1) ---
+
         jPanel1 = new JPanel();
         jPanel1.setBackground(new Color(0, 0, 0));
         jPanel1.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,
@@ -57,14 +56,14 @@ public class Ranking extends JFrame {
         jPanel1.setLayout(null);
         jPanel1.setBounds(60, 90, 650, 430);
 
-        // Título "ranking de jugadores"
+   
         jLabel3 = new JLabel("ranking de jugadores");
         jLabel3.setFont(new Font("Inlanders", Font.PLAIN, 48));
         jLabel3.setForeground(new Color(0, 255, 0));
         jLabel3.setBounds(60, 10, 530, 70);
         jPanel1.add(jLabel3);
 
-        // --- ÁREA DE TEXTO / LISTA DE RANKING ---
+     
         jTextArea1 = new JTextArea();
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new Color(23, 24, 24));
@@ -80,10 +79,10 @@ public class Ranking extends JFrame {
 
         jScrollPane1 = new JScrollPane(jTextArea1);
         jScrollPane1.setBounds(20, 70, 600, 310);
-        jScrollPane1.setBorder(null); // Quitar borde predeterminado del scroll
+        jScrollPane1.setBorder(null); 
         jPanel1.add(jScrollPane1);
 
-        // Botón: salir (jButton2)
+
         jButton2 = new JButton("salir");
         jButton2.setBackground(new Color(34, 33, 33));
         jButton2.setFont(new Font("Inlanders", Font.PLAIN, 24));
@@ -97,7 +96,7 @@ public class Ranking extends JFrame {
 
         add(jPanel1);
 
-        // --- IMAGEN DE FONDO (jLabel1) ---
+
         jLabel1 = new JLabel();
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
         jLabel1.setBounds(0, 0, 780, 590);

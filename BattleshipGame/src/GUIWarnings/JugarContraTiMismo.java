@@ -30,14 +30,12 @@ public class JugarContraTiMismo {
     frame.setUndecorated(true); 
     frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-    // 1. Texto de Advertencia
     JLabel mensaje = new JLabel("No puedes jugar contra ti mismo!", JLabel.CENTER);
-    mensaje.setBounds(0, 130, 610, 40); // Centrado horizontalmente
+    mensaje.setBounds(0, 130, 610, 40); 
     mensaje.setFont(new Font("Cold Warm", Font.PLAIN, 30));
     mensaje.setForeground(Color.GREEN);
     frame.add(mensaje);
     
-    // 2. Botón OKAY
     JButton btnOkay = new JButton("OKAY");
     btnOkay.setBounds(220, 190, 170, 50);
     btnOkay.setBackground(new Color(34, 33, 33));
@@ -50,7 +48,7 @@ public class JugarContraTiMismo {
     btnOkay.addActionListener(e -> frame.dispose());
     frame.add(btnOkay);
 
-    // 3. Imagen de Fondo (Se añade al final para que esté "detrás")
+
     try {
         java.net.URL imgURL = getClass().getResource("/Images/joprep.png");
         if (imgURL != null) {
@@ -59,13 +57,12 @@ public class JugarContraTiMismo {
             frame.add(bg);
         } else {
             System.err.println("Error: No se encontró la imagen en /Images/joprep.png");
-            frame.getContentPane().setBackground(Color.BLACK); // Fondo de respaldo
+            frame.getContentPane().setBackground(Color.BLACK); 
         }
     } catch (Exception e) {
         e.printStackTrace();
     }
 
-    // 4. MOSTRAR al final
     frame.setVisible(true);
     }
 }

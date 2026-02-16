@@ -15,17 +15,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
-
 /**
  *
  * @author nasry
  */
-public class PickerNave extends JFrame{
-    
+public class PickerNave extends JFrame {
+
     private Battleship game;
     private Player jugadorActual;
 
-    // Botones con Estilo
     private JButton btnAcorazado, btnPortaaviones, btnSubmarino, btnDestructor;
     private JButton btnReset, btnListo;
     private JTextArea areaSeleccion;
@@ -35,9 +33,8 @@ public class PickerNave extends JFrame{
         this.game = game;
         this.jugadorActual = jugadorActual;
 
-        // Configuración del Frame
         setTitle("Battleship - Selección de Flota");
-        setSize(1330, 780); 
+        setSize(1330, 780);
         setLayout(null);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -45,7 +42,6 @@ public class PickerNave extends JFrame{
 
         initComponents();
 
-        // IMPORTANTE: setVisible al final para evitar parpadeos
         setVisible(true);
     }
 
@@ -53,19 +49,16 @@ public class PickerNave extends JFrame{
         Font fontLabels = new Font("Capture it", Font.ITALIC, 36);
         Color colorTexto = Color.WHITE;
 
-        // Labels de los barcos
         JLabel lblAco = crearLabel("ACORAZADO", 40, 260, 220, 40, fontLabels);
         JLabel lblPorta = crearLabel("PORTAAVIONES", 480, 260, 270, 40, fontLabels);
         JLabel lblDest = crearLabel("DESTRUCTOR", 40, 470, 220, 40, fontLabels);
         JLabel lblSub = crearLabel("SUBMARINO", 480, 470, 220, 40, fontLabels);
 
-        // Botones de barcos con imágenes
         btnAcorazado = crearBotonImagen("/Images/AcorazadoBtn.png", 40, 300, 420, 160);
         btnPortaaviones = crearBotonImagen("/Images/PortaavionesBtn.png", 480, 300, 420, 160);
         btnDestructor = crearBotonImagen("/Images/DestructorBtn.png", 40, 510, 420, 160);
         btnSubmarino = crearBotonImagen("/Images/SubmarinoBtn.png", 480, 510, 420, 160);
 
-        // Panel de control (lado derecho)
         JPanel panelControl = new JPanel();
         panelControl.setBackground(new Color(200, 191, 208));
         panelControl.setBorder(BorderFactory.createSoftBevelBorder(BevelBorder.RAISED));
@@ -94,7 +87,6 @@ public class PickerNave extends JFrame{
         scroll.setBounds(10, 110, 350, 150);
         panelControl.add(scroll);
 
-        // Botón RESET
         btnReset = new JButton("RESET");
         btnReset.setBackground(new Color(102, 0, 0));
         btnReset.setForeground(Color.WHITE);
@@ -106,7 +98,6 @@ public class PickerNave extends JFrame{
         });
         panelControl.add(btnReset);
 
-        // Botón LISTO
         btnListo = new JButton("LISTO!");
         btnListo.setBackground(new Color(0, 0, 51));
         btnListo.setForeground(Color.WHITE);
@@ -117,43 +108,40 @@ public class PickerNave extends JFrame{
 
         add(panelControl);
 
-        // Asignar acciones a los botones de naves
         btnAcorazado.addActionListener(e -> seleccionar(TipoBarco.ACORAZADO));
         btnPortaaviones.addActionListener(e -> seleccionar(TipoBarco.PORTAAVIONES));
         btnSubmarino.addActionListener(e -> seleccionar(TipoBarco.SUBMARINO));
         btnDestructor.addActionListener(e -> seleccionar(TipoBarco.DESTRUCTOR));
 
-        // Fondo (al final para que no tape nada)
         JLabel fondo = new JLabel(new ImageIcon(getClass().getResource("/Images/SelectingBackground.png")));
         fondo.setBounds(0, 0, 1330, 780);
         add(fondo);
     }
 
-    // --- MÉTODOS AUXILIARES ---
-
     private void seleccionar(TipoBarco barco) {
         if (game.seleccionarBarco(jugadorActual, barco)) {
-            areaSeleccion.append("- " + barco.getCodigo() + "\n"); // Solo muestra el código
+            areaSeleccion.append("- " + barco.getCodigo() + "\n");
         } else {
             new MaximoDeNaves();
         }
     }
 
- private void accionListo(ActionEvent e) {
-    if (!game.lineupCompleto(jugadorActual)) {
-        new CompletarFlota(); // Asegúrate de que sea visible
-        return;
+    private void accionListo(ActionEvent e) {
+        if (!game.lineupCompleto(jugadorActual)) {
+            new CompletarFlota();
+            return;
+        }
+
+        this.dispose();
+        if (jugadorActual == game.getPlayer1()) {
+
+            new PickerNave(game, game.getPlayer2());
+        } else {
+
+            new LineUpPosition(game, game.getPlayer1());
+        }
     }
 
-    this.dispose(); // Cerramos la actual
-    if (jugadorActual == game.getPlayer1()) {
-        // Si terminó P1, le toca elegir naves al P2
-        new PickerNave(game, game.getPlayer2());
-    } else {
-        // Si ya terminó P2, pasamos a POSICIONAR las naves en el tablero
-        new LineUpPosition(game, game.getPlayer1());
-    }
-}
     private JButton crearBotonImagen(String ruta, int x, int y, int w, int h) {
         JButton btn = new JButton();
         try {
@@ -177,5 +165,5 @@ public class PickerNave extends JFrame{
         lbl.setBounds(x, y, w, h);
         add(lbl);
         return lbl;
-}
+    }
 }

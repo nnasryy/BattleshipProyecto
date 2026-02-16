@@ -17,15 +17,15 @@ import javax.swing.border.BevelBorder;
  *
  * @author nasry
  */
-public class CambiarUsername extends JFrame{
-    
+public class CambiarUsername extends JFrame {
+
     private JButton jButton1, btnSalir;
     private JLabel jLabel1, jLabel3;
     private JTextField jTextField2;
     private Battleship game;
 
     public CambiarUsername(Battleship game) {
-        this.game=game;
+        this.game = game;
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -46,7 +46,7 @@ public class CambiarUsername extends JFrame{
         jButton1.setBounds(310, 210, 170, 50);
         jButton1.addActionListener(this::jButton1ActionPerformed);
         add(jButton1);
-         btnSalir = new JButton("SALIR");
+        btnSalir = new JButton("SALIR");
         btnSalir.setBackground(new Color(34, 33, 33));
         btnSalir.setFont(new Font("Cold Warm", Font.PLAIN, 24));
         btnSalir.setForeground(new Color(0, 255, 0));
@@ -83,21 +83,17 @@ public class CambiarUsername extends JFrame{
     private void jButton1ActionPerformed(ActionEvent evt) {
         String nuevoUser = jTextField2.getText().trim();
         String usuarioActual = game.getCurrentUser().getUsername();
-        
-        // 1. Validar longitud
+
         if (!battleshipgame.Player.lengthValido(nuevoUser)) {
             new MinimoCaracteres();
             return;
         }
 
-        // 2. Validar existencia (LÓGICA CORREGIDA)
-        // Si el nombre ya existe Y no es mi propio nombre, entonces error.
         if (battleshipgame.Player.usernameExists(nuevoUser) && !nuevoUser.equals(usuarioActual)) {
             new SameUsername();
             return;
         }
 
-        // 3. Si pasa las validaciones, cambiar
         game.getCurrentUser().setUsername(nuevoUser);
         this.dispose();
     }

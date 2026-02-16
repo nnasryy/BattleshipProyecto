@@ -16,14 +16,13 @@ public class LineUpPosition extends javax.swing.JFrame {
 
     private Battleship game;
     private Player jugadorActual;
-    private TipoBarco[] lineup; // Aquí se almacenará el lineup
+    private TipoBarco[] lineup;
     private JButton[][] grid = new JButton[8][8];
 
     public LineUpPosition(Battleship game, Player jugador) {
         this.game = game;
         this.jugadorActual = jugador;
-        
-        // Sincronización con la lógica de Battleship usando los getters
+
         this.lineup = (jugador == game.getPlayer1()) ? game.getLineupP1() : game.getLineupP2();
 
         initComponents();
@@ -36,21 +35,28 @@ public class LineUpPosition extends javax.swing.JFrame {
     }
 
     private String nombreCompleto(String cod) {
-        if (cod == null) return "";
+        if (cod == null) {
+            return "";
+        }
         switch (cod) {
-            case "PA": return "PORTAAVIONES";
-            case "AZ": return "ACORAZADO";
-            case "SM": return "SUBMARINO";
-            case "DT": return "DESTRUCTOR";
-            default: return "";
+            case "PA":
+                return "PORTAAVIONES";
+            case "AZ":
+                return "ACORAZADO";
+            case "SM":
+                return "SUBMARINO";
+            case "DT":
+                return "DESTRUCTOR";
+            default:
+                return "";
         }
     }
 
     private void actualizarLabels() {
         user.setText(jugadorActual.getUsername().toUpperCase());
-        
+
         int indice = game.getIndiceActual(jugadorActual);
-        
+
         if (indice < lineup.length && lineup[indice] != null) {
             nave.setText(nombreCompleto(lineup[indice].getCodigo()));
         } else {
@@ -69,29 +75,28 @@ public class LineUpPosition extends javax.swing.JFrame {
         jPanel1.setLayout(null);
         jPanel1.setBounds(90, 100, 960, 660);
 
-  jLabel3 = new JLabel("TURNO DE PLAYER:");
+        jLabel3 = new JLabel("TURNO DE PLAYER:");
         jLabel3.setFont(new Font("Inlanders", 1, 36));
         jLabel3.setForeground(new Color(0, 204, 0));
-        jLabel3.setBounds(50, 30, 400, 50); // Posición inicial arriba
+        jLabel3.setBounds(50, 30, 400, 50);
         jPanel1.add(jLabel3);
-        
+
         user = new JLabel("Player name");
         estiloLabel(user);
         user.setBounds(460, 25, 340, 60);
         jPanel1.add(user);
 
-     lblInstruccion = new JLabel("selecciona una celda para:");
+        lblInstruccion = new JLabel("selecciona una celda para:");
         lblInstruccion.setFont(new Font("Inlanders", 1, 28));
         lblInstruccion.setForeground(new Color(0, 204, 0));
-        lblInstruccion.setBounds(50, 80, 400, 40); 
+        lblInstruccion.setBounds(50, 80, 400, 40);
         jPanel1.add(lblInstruccion);
 
         nave = new JLabel("nombre nave");
         estiloLabel(nave);
-        nave.setBounds(460, 75, 340, 60); 
+        nave.setBounds(460, 75, 340, 60);
         jPanel1.add(nave);
 
-        // --- MATRIZ DE BOTONES ---
         for (int fila = 0; fila < 8; fila++) {
             for (int col = 0; col < 8; col++) {
                 final int f = fila;
@@ -104,7 +109,9 @@ public class LineUpPosition extends javax.swing.JFrame {
                 btn.setBounds(50 + (col * 70), 160 + (fila * 60), 70, 60);
 
                 btn.addActionListener(e -> {
-                    if (!btn.getText().equals("OPEN")) return;
+                    if (!btn.getText().equals("OPEN")) {
+                        return;
+                    }
 
                     int indiceActual = game.getIndiceActual(jugadorActual);
                     if (indiceActual < lineup.length) {
@@ -141,7 +148,9 @@ public class LineUpPosition extends javax.swing.JFrame {
             ImageIcon icon = new ImageIcon(getClass().getResource("/Images/CeldaChooser.png"));
             Image img = icon.getImage().getScaledInstance(1140, 820, Image.SCALE_SMOOTH);
             jLabelFondo.setIcon(new ImageIcon(img));
-        } catch (Exception e) { System.out.println("Error fondo: " + e.getMessage()); }
+        } catch (Exception e) {
+            System.out.println("Error fondo: " + e.getMessage());
+        }
         jLabelFondo.setBounds(0, 0, 1140, 820);
 
         getContentPane().add(jPanel1);
@@ -149,10 +158,11 @@ public class LineUpPosition extends javax.swing.JFrame {
         getContentPane().setComponentZOrder(jPanel1, 0);
         getContentPane().setComponentZOrder(jLabelFondo, 1);
 
-        // LISTENERS
         jButton66.addActionListener(e -> {
             int indiceActual = game.getIndiceActual(jugadorActual);
-            if (indiceActual >= lineup.length) return;
+            if (indiceActual >= lineup.length) {
+                return;
+            }
             for (int i = 0; i < 100; i++) {
                 int f = (int) (Math.random() * 8);
                 int c = (int) (Math.random() * 8);

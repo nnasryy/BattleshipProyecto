@@ -111,7 +111,6 @@ public class BattleshipBoard extends JFrame {
 
         add(jPanelInfo);
 
-        // --- TABLERO IZQUIERDA (JUGADOR ACTUAL) ---
         lblIzq = new JLabel();
         lblIzq.setFont(new Font("Capture it", 1, 30));
         lblIzq.setForeground(COLOR_CYAN);
@@ -130,7 +129,6 @@ public class BattleshipBoard extends JFrame {
             }
         }
 
-        // --- TABLERO DERECHA (RIVAL) ---
         int rivalStartX = startX + boardWidth + 70;
         lblDer = new JLabel();
         lblDer.setFont(new Font("Capture it", 1, 30));
@@ -202,11 +200,21 @@ public class BattleshipBoard extends JFrame {
     private void establecerIcono(JButton btn, String codigo) {
         String ruta = "";
         switch (codigo) {
-            case "PA": ruta = "/Images/portaavionesbrd.png"; break;
-            case "AZ": ruta = "/Images/acorazadobrd.png"; break;
-            case "SM": ruta = "/Images/submarinobrd.png"; break;
-            case "DT": ruta = "/Images/destructorbrd.png"; break;
-            case "F": ruta = "/Images/failedbrd.png"; break; // Imagen temporal de fallo
+            case "PA":
+                ruta = "/Images/portaavionesbrd.png";
+                break;
+            case "AZ":
+                ruta = "/Images/acorazadobrd.png";
+                break;
+            case "SM":
+                ruta = "/Images/submarinobrd.png";
+                break;
+            case "DT":
+                ruta = "/Images/destructorbrd.png";
+                break;
+            case "F":
+                ruta = "/Images/failedbrd.png";
+                break;
             case "X":
                 btn.setText("X");
                 btn.setForeground(Color.RED);
@@ -241,14 +249,13 @@ public class BattleshipBoard extends JFrame {
                 establecerIcono(playerBoard[i][j], valMio);
 
                 String valRival = tableroEnemigo[i][j];
-                // La matriz solo tiene "~" o Codigos de barco vivo.
                 if ("~".equals(valRival)) {
                     establecerIcono(rivalBoard[i][j], "~");
                 } else {
                     if (tutorial) {
                         establecerIcono(rivalBoard[i][j], valRival);
                     } else {
-                        establecerIcono(rivalBoard[i][j], "~"); // Ocultar barco intacto
+                        establecerIcono(rivalBoard[i][j], "~");
                     }
                 }
             }
@@ -264,6 +271,15 @@ public class BattleshipBoard extends JFrame {
         return null;
     }
 
+    private String obtenerCodigoBarcoPorNombre(String nombre) {
+        for (TipoBarco barco : TipoBarco.values()) {
+            if (barco.getNombreCompleto().equalsIgnoreCase(nombre)) {
+                return barco.getCodigo();
+            }
+        }
+        return "X";
+    }
+
     private void disparar(int fila, int col, JButton btn) {
         int turnoActual = (jugadorActual == game.getPlayer1()) ? 1 : 2;
         String resultado = game.bombardear(turnoActual, fila, col);
@@ -277,18 +293,23 @@ public class BattleshipBoard extends JFrame {
             case "X":
                 String nombre = game.getLastHitShipName();
                 int restantes = game.getLastHitRemainingLives();
+
+                String codigoBarco = obtenerCodigoBarcoPorNombre(nombre);
+                establecerIcono(btn, codigoBarco);
+
                 new GUIWarnings.MensajeImpacto(this, "IMPACTO", "Has bombardeado un " + nombre + ". Faltan " + restantes + " bombardeos.").setVisible(true);
-                cargarTableros();
                 break;
 
             case "N":
                 return;
 
-            default: // HUNDIDO
+            default:
                 TipoBarco barcoHundido = obtenerBarcoPorCodigo(resultado);
                 String nombreHundido = (barcoHundido != null) ? barcoHundido.getNombreCompleto() : resultado;
+
+                establecerIcono(btn, resultado);
+
                 new GUIWarnings.MensajeImpacto(this, "HUNDIDO", "Has destruido el " + nombreHundido + ".").setVisible(true);
-                cargarTableros();
                 break;
         }
 
@@ -307,18 +328,16 @@ public class BattleshipBoard extends JFrame {
             perdedor.agregarAlHistorial(registro);
 
             ganador.agregarPuntos(3);
-            // Aquí el ganador se obtiene directamente del objeto game, así que es correcto
+
             new Winner(ganador.getUsername(), 3, game).setVisible(true);
             dispose();
-        } else if (!resultado.equals("N")) {
-            // CAMBIO DE TURNO
+        } else {
+
             Player temp = jugadorActual;
             jugadorActual = rivalActual;
             rivalActual = temp;
 
-            // CORRECCIÓN: Se pasa 'jugadorActual' porque es el turno del NUEVO jugador
             new GUIWarnings.CambioTurno(this, jugadorActual.getUsername());
-            
             actualizarInterfazCompleta();
         }
     }
@@ -332,7 +351,9 @@ public class BattleshipBoard extends JFrame {
         int count = 0;
         int[] vidas = (rivalActual == game.getPlayer1()) ? game.getVidasP1() : game.getVidasP2();
         for (int v : vidas) {
-            if (v > 0) count++;
+            if (v > 0) {
+                count++;
+            }
         }
         return count;
     }

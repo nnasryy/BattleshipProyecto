@@ -19,11 +19,11 @@ import javax.swing.border.BevelBorder;
 public class Configuracion extends JFrame {
 
     private JPanel jPanel1;
-    private JButton jButton1; // Modo de juego
-    private JButton jButton2; // Salir
-    private JButton jButton3; // Dificultad
-    private JLabel jLabel1;   // Fondo
-    private JLabel jLabel3;   // Título
+    private JButton jButton1;
+    private JButton jButton2;
+    private JButton jButton3;
+    private JLabel jLabel1;
+    private JLabel jLabel3;
 
     private Battleship game;
 
@@ -39,7 +39,6 @@ public class Configuracion extends JFrame {
         setLayout(null);
         setResizable(false);
 
-        // --- PANEL CENTRAL ---
         jPanel1 = new JPanel();
         jPanel1.setBackground(new Color(0, 0, 0));
         jPanel1.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,
@@ -53,19 +52,16 @@ public class Configuracion extends JFrame {
         jLabel3.setBounds(70, 30, 370, 70);
         jPanel1.add(jLabel3);
 
-        // Botón: Dificultad
         jButton3 = createStyledButton("dificultad");
         jButton3.setBounds(150, 120, 200, 60);
         jButton3.addActionListener(e -> jButton3ActionPerformed(e));
         jPanel1.add(jButton3);
 
-        // Botón: Modo de juego
         jButton1 = createStyledButton("modo de juego");
         jButton1.setBounds(150, 210, 200, 60);
         jButton1.addActionListener(e -> jButton1ActionPerformed(e));
         jPanel1.add(jButton1);
 
-        // Botón: Salir (Volver al Menú)
         jButton2 = createStyledButton("salir");
         jButton2.setBounds(150, 300, 200, 50);
         jButton2.addActionListener(e -> jButton2ActionPerformed(e));
@@ -73,7 +69,6 @@ public class Configuracion extends JFrame {
 
         add(jPanel1);
 
-        // --- FONDO ---
         jLabel1 = new JLabel();
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
         jLabel1.setBounds(0, 0, 780, 590);
@@ -91,9 +86,7 @@ public class Configuracion extends JFrame {
         return btn;
     }
 
-    // --- EVENTOS ---
     private void jButton1ActionPerformed(ActionEvent evt) {
-        // CORREGIDO: Se pasa 'game' y se cierra la ventana actual
         new ModoJuego(game).setVisible(true);
         this.dispose();
     }
@@ -104,7 +97,6 @@ public class Configuracion extends JFrame {
     }
 
     private void jButton3ActionPerformed(ActionEvent evt) {
-        // CORREGIDO: Se pasa 'game'
         new Dificultad(game).setVisible(true);
         this.dispose();
     }

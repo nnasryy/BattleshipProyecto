@@ -42,7 +42,7 @@ public class ModificarMisDatos extends JFrame{
         setLayout(null);
         setResizable(false);
 
-        // --- PANEL DE OPCIONES ---
+     
         jPanel3 = new JPanel();
         jPanel3.setBackground(new Color(0, 0, 0));
         jPanel3.setBorder(BorderFactory.createBevelBorder(
@@ -51,7 +51,7 @@ public class ModificarMisDatos extends JFrame{
         jPanel3.setLayout(null);
         jPanel3.setBounds(120, 90, 520, 430);
 
-        // Título
+
         jLabel5 = new JLabel("modificar mis datos");
         jLabel5.setFont(new Font("Inlanders", Font.PLAIN, 36));
         jLabel5.setForeground(new Color(0, 255, 0));
@@ -59,7 +59,7 @@ public class ModificarMisDatos extends JFrame{
         jLabel5.setBounds(80, 30, 370, 70);
         jPanel3.add(jLabel5);
 
-        // Botones
+
         jButton5 = createNeonButton("cambiar username");
         jButton5.setBounds(120, 120, 280, 60);
         jButton5.addActionListener(this::jButton5ActionPerformed);
@@ -76,14 +76,14 @@ public class ModificarMisDatos extends JFrame{
         jPanel3.add(jButton4);
         add(jPanel3);
         
-         // --- IMAGEN DE FONDO ---
+      
         jLabel1 = new JLabel();
         jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
         jLabel1.setBounds(0, 0, 780, 590);
         add(jLabel1);
     }
 
-    // Estilo de botón consistente
+
     private JButton createNeonButton(String text) {
         JButton btn = new JButton(text);
         btn.setBackground(new Color(34, 33, 33));
@@ -95,7 +95,7 @@ public class ModificarMisDatos extends JFrame{
         return btn;
     }
 
-    // --- ACCIONES DE BOTONES ---
+ 
     private void jButton3ActionPerformed(ActionEvent evt) {
         new CambiarPassword(this.game).setVisible(true);
     }

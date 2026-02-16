@@ -45,7 +45,7 @@ public class Dificultad extends JFrame {
         jLabel3.setBounds(120, 30, 270, 70);
         jPanel1.add(jLabel3);
 
-        // Botones de dificultad
+   
         jButton3 = createNeonButton("Easy - cinco barcos");
         jButton3.setBounds(100, 110, 300, 40);
         jButton3.addActionListener(e -> seleccionarDificultad(DificultadJuego.EASY));
@@ -65,8 +65,7 @@ public class Dificultad extends JFrame {
         jButton1.setBounds(100, 290, 300, 40);
         jButton1.addActionListener(e -> seleccionarDificultad(DificultadJuego.GENIUS));
         jPanel1.add(jButton1);
-
-        // Botón Salir
+        
         jButton2 = createNeonButton("salir");
         jButton2.setBounds(20, 370, 160, 50);
         jButton2.addActionListener(e -> regresarAlMenu());

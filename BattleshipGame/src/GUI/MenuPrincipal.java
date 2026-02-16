@@ -25,10 +25,8 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public class MenuPrincipal extends JFrame {
 
-    // Ahora usamos el objeto game como motor principal
     private battleshipgame.Battleship game;
 
-    // Cambiamos el constructor para recibir el objeto game
     public MenuPrincipal(Battleship game) {
         this.game = game;
 
@@ -56,7 +54,6 @@ public class MenuPrincipal extends JFrame {
         Color fondoBtn = new Color(18, 40, 61);
         Color textoBtn = new Color(186, 215, 241);
 
-        // 1. Botón BATTLESHIP
         btnBattleship = crearBoton("BATTLESHIP", fontBotones, fondoBtn, textoBtn, 450, 280, 410, 60);
         btnBattleship.addActionListener(e -> {
             if (Player.getTotalPlayers() < 2) {
@@ -79,43 +76,36 @@ public class MenuPrincipal extends JFrame {
                 return;
             }
 
-            // Usamos game.getCurrentUser() para validar
             if (rival.getUsername().equals(game.getCurrentUser().getUsername())) {
                 new JugarContraTiMismo();
                 return;
             }
 
-            // Iniciamos partida usando el objeto game que ya tenemos
             game.iniciarPartida(game.getCurrentUser(), rival);
             new PickerNave(this.game, this.game.getPlayer1());
             this.dispose();
         });
 
-        // 2. Botón CONFIGURACIÓN
         btnConfiguracion = crearBoton("CONFIGURACIÓN", fontBotones, fondoBtn, textoBtn, 450, 360, 410, 60);
         btnConfiguracion.addActionListener(e -> {
-            // Aquí también deberías pasar 'game' si la configuración lo requiere
+
             new Configuracion(this.game).setVisible(true);
             this.dispose();
         });
 
-        // 3. Botón REPORTES
         btnReportes = crearBoton("REPORTES", fontBotones, fondoBtn, textoBtn, 450, 440, 410, 60);
         btnReportes.addActionListener(e -> {
             new Reportes(this.game).setVisible(true);
             this.dispose();
         });
 
-        // 4. Botón MI PERFIL (¡AQUÍ ESTÁ EL CAMBIO!)
-        // Dentro de MenuPrincipal.java
         btnPerfil = crearBoton("MI PERFIL", fontBotones, fondoBtn, textoBtn, 450, 520, 410, 60);
         btnPerfil.addActionListener(e -> {
-            // CAMBIO: Ahora llama a MiPerfil, no a VerMisDatos directamente
+
             new MiPerfil(this.game).setVisible(true);
             this.dispose();
         });
 
-        // 5. Botón CERRAR SESIÓN
         btnCerrarSesion = crearBoton("CERRAR SESIÓN", fontBotones, fondoBtn, textoBtn, 450, 600, 410, 60);
         btnCerrarSesion.addActionListener(e -> {
             new MenuInicio();

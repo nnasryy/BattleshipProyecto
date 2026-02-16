@@ -25,7 +25,8 @@ import javax.swing.border.BevelBorder;
  * @author nasry
  */
 public class LogIn {
-     JFrame frame;
+
+    JFrame frame;
     JPasswordField passField;
     char defaultEcho;
 
@@ -119,7 +120,6 @@ public class LogIn {
             passField.setEchoChar(showPass.isSelected() ? (char) 0 : defaultEcho);
         });
 
-        // --- ACCIÓN CORREGIDA ---
         nextBtn.addActionListener(e -> {
             String user = userField.getText().trim();
             String pass = new String(passField.getPassword()).trim();
@@ -129,18 +129,16 @@ public class LogIn {
                 return;
             }
 
-            // 1. Intentamos obtener el objeto Player directamente
             Player jugadorLogueado = Player.login(user, pass);
 
             if (jugadorLogueado != null) {
-                // 2. Creamos el juego
+
                 battleshipgame.Battleship game = new battleshipgame.Battleship();
-                
-                // 3. CLAVE: Le decimos al juego QUIÉN es el usuario actual
+
                 game.setCurrentUser(jugadorLogueado);
 
                 frame.dispose();
-                new MenuPrincipal(game); 
+                new MenuPrincipal(game);
             } else {
                 new PlayerNotFound();
             }

@@ -96,7 +96,6 @@ public class Ultimos10Juegos extends JFrame {
         try {
             jLabel1.setIcon(new ImageIcon(getClass().getResource("/Images/UserScreen.png")));
         } catch (Exception e) {
-            // Manejo de error
         }
         jLabel1.setBounds(0, 0, 780, 590);
         add(jLabel1);
@@ -104,8 +103,7 @@ public class Ultimos10Juegos extends JFrame {
 
     private void cargarDatos() {
         StringBuilder sb = new StringBuilder();
-        
-        // CORRECCIÓN: Validación de seguridad
+
         if (this.game == null) {
             sb.append("Error crítico: La sesión no existe (game es null).");
         } else if (this.game.getCurrentUser() == null) {
@@ -114,7 +112,7 @@ public class Ultimos10Juegos extends JFrame {
             Player currentUser = this.game.getCurrentUser();
             if (currentUser.getHistorialPartidas() != null) {
                 int contador = 1;
-                // Iterar al revés para mostrar los más recientes primero
+
                 for (int i = currentUser.getHistorialPartidas().size() - 1; i >= 0; i--) {
                     sb.append(contador).append("- ").append(currentUser.getHistorialPartidas().get(i)).append("\n");
                     contador++;
@@ -132,7 +130,7 @@ public class Ultimos10Juegos extends JFrame {
 
     private void jButton2ActionPerformed(ActionEvent evt) {
         this.dispose();
-        // CORRECCIÓN: Pasar 'game' de vuelta a Reportes
+
         new Reportes(this.game).setVisible(true);
     }
 }

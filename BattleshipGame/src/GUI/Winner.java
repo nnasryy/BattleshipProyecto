@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-
 public class Winner extends JFrame {
 
     private JLabel lblFelicidades, lblMensaje, backgroundLabel;
@@ -24,7 +23,7 @@ public class Winner extends JFrame {
     public Winner(String winnerName, int puntos, Battleship game) {
         this.game = game;
         initComponents();
-        setWinnerData(winnerName, puntos); 
+        setWinnerData(winnerName, puntos);
         this.setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -35,12 +34,11 @@ public class Winner extends JFrame {
         setLayout(null);
         setResizable(false);
 
-        // --- TÍTULO "FELICIDADES" ---
         lblFelicidades = new JLabel();
         try {
             lblFelicidades.setIcon(new ImageIcon(getClass().getResource("/Images/¡FELICIDADES!.png")));
         } catch (Exception e) {
-            lblFelicidades.setText("¡FELICIDADES!");
+            lblFelicidades.setText("FELICIDADES!");
             lblFelicidades.setFont(new Font("Capture it", Font.BOLD, 48));
             lblFelicidades.setForeground(Color.WHITE);
         }
@@ -48,7 +46,6 @@ public class Winner extends JFrame {
         lblFelicidades.setHorizontalAlignment(SwingConstants.CENTER);
         add(lblFelicidades);
 
-        // --- PANEL DE MENSAJE ---
         panelMensaje = new JPanel();
         panelMensaje.setBackground(new Color(17, 25, 48));
         panelMensaje.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, null, null, new Color(0, 0, 51), new Color(0, 0, 51)));
@@ -64,7 +61,7 @@ public class Winner extends JFrame {
         add(panelMensaje);
 
         // --- BOTÓN ATRÁS ---
-        JButton btnAtras = new JButton("ATRÁS");
+        JButton btnAtras = new JButton("ATRAS");
         btnAtras.setBackground(new Color(102, 0, 0));
         btnAtras.setFont(new Font("Capture it", Font.PLAIN, 36));
         btnAtras.setForeground(Color.WHITE);
@@ -85,11 +82,9 @@ public class Winner extends JFrame {
             backgroundLabel.setOpaque(true);
         }
         backgroundLabel.setBounds(0, 0, 800, 650);
-        
-   
+
         add(backgroundLabel);
-        
-    
+
     }
 
     public void setWinnerData(String name, int puntos) {

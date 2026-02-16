@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Player {
 
     private static ArrayList<Player> players = new ArrayList<>();
-private ArrayList<String> historialPartidas = new ArrayList<>();
-    
+    private ArrayList<String> historialPartidas = new ArrayList<>();
+
     private String username;
     private String password;
     private int puntos;
@@ -25,24 +25,34 @@ private ArrayList<String> historialPartidas = new ArrayList<>();
         this.username = username;
         this.password = password;
         this.puntos = 0;
-        this.logs = new String[10];  // últimos 10 juegos
+        this.logs = new String[10];
         this.logIndex = 0;
     }
-    
 
+    public String getUsername() {
+        return username;
+    }
 
-    // ====== GETTERS ======
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
-    public int getPuntos() { return puntos; }
+    public String getPassword() {
+        return password;
+    }
 
-    //=======SETTERS======
- public void setUsername(String username) { this.username = username; }
-public void setPassword(String password) { this.password = password; }
-    
-    
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     // ====== PUNTOS ======
-    public void agregarPuntos(int pts) { puntos += pts; }
+    public void agregarPuntos(int pts) {
+        puntos += pts;
+    }
 
     // ====== LOGS ======
     public void registrarLog(String descripcion) {
@@ -53,65 +63,78 @@ public void setPassword(String password) { this.password = password; }
     public String[] getLogs() {
         String[] resultado = new String[10];
         int k = 0;
-        for (int i = logIndex; i < 10; i++) resultado[k++] = logs[i];
-        for (int i = 0; i < logIndex; i++) resultado[k++] = logs[i];
+        for (int i = logIndex; i < 10; i++) {
+            resultado[k++] = logs[i];
+        }
+        for (int i = 0; i < logIndex; i++) {
+            resultado[k++] = logs[i];
+        }
         return resultado;
     }
+
     public static int getTotalPlayers() {
-    return players.size();
-}
-
-public static Player getPlayerByUsername(String username) {
-    for (Player p : players) {
-        if (p.getUsername().equals(username)) {
-            return p;
-        }
+        return players.size();
     }
-    return null;
-}
 
-    // ====== VALIDACIONES ======
+    public static Player getPlayerByUsername(String username) {
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public static boolean lengthValido(String text) {
         return text.length() >= 3 && text.length() <= 20;
     }
 
     public static boolean usernameExists(String username) {
-        for (Player p : players) if (p.username.equals(username)) return true;
+        for (Player p : players) {
+            if (p.username.equals(username)) {
+                return true;
+            }
+        }
         return false;
     }
 
-    // ====== REGISTRO ======
     public static boolean registrar(String username, String password) {
-        if (!lengthValido(username) || !lengthValido(password)) return false;
-        if (usernameExists(username)) return false;
+        if (!lengthValido(username) || !lengthValido(password)) {
+            return false;
+        }
+        if (usernameExists(username)) {
+            return false;
+        }
 
         players.add(new Player(username, password));
         return true;
     }
-    
-    // ====== LOGIN ======
+
     public static Player login(String username, String password) {
-        for (Player p : players) if (p.username.equals(username) && p.password.equals(password)) return p;
+        for (Player p : players) {
+            if (p.username.equals(username) && p.password.equals(password)) {
+                return p;
+            }
+        }
         return null;
     }
- //==== LISTA GLOBAL =====
-    public static ArrayList<Player> getAllPlayers() { return players; }
-    
-    //====ELIMINAR CUENTA=====
-    public static void eliminarPlayer(Player p) {
-    players.remove(p);
-}
-    //===HISTORIAL===
-    public void agregarAlHistorial(String registro) {
-    if (historialPartidas.size() >= 10) {
-        historialPartidas.remove(0);
+
+    public static ArrayList<Player> getAllPlayers() {
+        return players;
     }
-    historialPartidas.add(registro);
-}
 
-public ArrayList<String> getHistorialPartidas() {
-    return historialPartidas;
-}
-}
+    public static void eliminarPlayer(Player p) {
+        players.remove(p);
+    }
 
+    public void agregarAlHistorial(String registro) {
+        if (historialPartidas.size() >= 10) {
+            historialPartidas.remove(0);
+        }
+        historialPartidas.add(registro);
+    }
 
+    public ArrayList<String> getHistorialPartidas() {
+        return historialPartidas;
+    }
+}

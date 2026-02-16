@@ -88,7 +88,6 @@ public class ModoJuego extends JFrame {
     }
 
     private void seleccionarModo(boolean esTutorial) {
-        // Asegúrate de tener este método en tu clase Battleship
         game.setModoTutorial(esTutorial);
         regresar();
     }

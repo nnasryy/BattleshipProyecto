@@ -68,22 +68,22 @@ public class VerMisDatos extends JFrame{
     }
 
     private void initComponents() {
-        // --- PANEL CENTRAL (Capa superior) ---
+   
         jPanel1 = new JPanel();
-        jPanel1.setBackground(new Color(0, 0, 0, 200)); // Un toque de transparencia
+        jPanel1.setBackground(new Color(0, 0, 0, 200)); 
         jPanel1.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED,
                 null, null, new Color(0, 255, 51), new Color(0, 255, 0)));
         jPanel1.setLayout(null);
         jPanel1.setBounds(120, 60, 520, 430);
 
-        // Título
+
         jLabel4 = new JLabel("VER MIS DATOS", SwingConstants.CENTER);
         jLabel4.setFont(new Font("Inlanders", Font.PLAIN, 45));
         jLabel4.setForeground(new Color(0, 255, 0));
         jLabel4.setBounds(50, 30, 420, 60);
         jPanel1.add(jLabel4);
 
-        // Username Label y Field
+ 
         jLabel5 = new JLabel("USERNAME:");
         jLabel5.setFont(new Font("Inlanders", Font.PLAIN, 28));
         jLabel5.setForeground(new Color(0, 255, 0));
@@ -94,7 +94,7 @@ public class VerMisDatos extends JFrame{
         jTextField1.setBounds(60, 155, 400, 35);
         jPanel1.add(jTextField1);
 
-        // Password Label y Field
+    
         jLabel3 = new JLabel("PASSWORD:");
         jLabel3.setFont(new Font("Inlanders", Font.PLAIN, 28));
         jLabel3.setForeground(new Color(0, 255, 0));
@@ -105,7 +105,6 @@ public class VerMisDatos extends JFrame{
         jTextField2.setBounds(60, 255, 400, 35);
         jPanel1.add(jTextField2);
 
-        // Botón Salir
         jButton2 = new JButton("VOLVER");
         jButton2.setBackground(new Color(20, 20, 20));
         jButton2.setFont(new Font("Inlanders", Font.PLAIN, 20));
@@ -137,7 +136,7 @@ public class VerMisDatos extends JFrame{
 
     private JTextField createStyledTextField() {
         JTextField txt = new JTextField();
-        txt.setEditable(false); // Solo lectura para que no lo modifiquen aquí
+        txt.setEditable(false); 
         txt.setBackground(new Color(30, 30, 30));
         txt.setFont(new Font("Monospaced", Font.BOLD, 22));
         txt.setForeground(new Color(0, 255, 51));
